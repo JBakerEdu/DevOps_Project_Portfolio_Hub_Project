@@ -1,4 +1,4 @@
-package edu.westga.comp4420.javafx_sample;
+package edu.westga.comp4420.project_portfolio;
 
 import java.io.IOException;
 
