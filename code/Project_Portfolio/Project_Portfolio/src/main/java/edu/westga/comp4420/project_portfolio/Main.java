@@ -11,8 +11,8 @@ import javafx.scene.Scene;
 /**
  * Entry point for the program
  *
- * @author	Comp 4420
- * @version Spring 2024
+ * @author	Jacob Baker
+ * @version Spring 2025
  */
 public class Main extends Application {
 	public static final String WINDOW_TITLE = "Project Portfolio Hub";
