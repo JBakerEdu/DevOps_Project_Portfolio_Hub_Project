@@ -16,7 +16,7 @@ import javafx.scene.Scene;
  */
 public class Main extends Application {
 	public static final String WINDOW_TITLE = "Project Portfolio Hub";
-	public static final String GUI_RESOURCE = "view/codebehind/MainWindow.fxml";
+	public static final String GUI_RESOURCE = "view/codebehind/HomePageView.fxml";
 
 	/**
 	 * JavaFX entry point.
