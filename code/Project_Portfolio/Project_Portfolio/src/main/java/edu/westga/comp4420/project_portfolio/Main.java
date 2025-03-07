@@ -47,4 +47,13 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		Main.launch(args);
 	}
+	
+	/**
+	 * gets the windows title
+	 *
+	 * @return string windows title
+	 */
+	public static String getWindowTitle() {
+        return WINDOW_TITLE;
+    }
 }

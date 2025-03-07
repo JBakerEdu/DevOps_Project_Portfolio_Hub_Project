@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="953.0" maxWidth="610.0" minHeight="953.0" minWidth="610.0" prefHeight="953.0" prefWidth="610.0" style="-fx-background-color: #3a3e4d;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.comp4420.project_portfolio.view.codebehind.HomePageView">
+<AnchorPane fx:id="anchorPane" maxHeight="953.0" maxWidth="610.0" minHeight="953.0" minWidth="610.0" prefHeight="953.0" prefWidth="610.0" style="-fx-background-color: #3a3e4d;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.comp4420.project_portfolio.view.codebehind.HomePageView">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="10.0" focusTraversable="true" height="73.0" stroke="#3a3e4d00" strokeType="INSIDE" width="610.0">
          <fill>
@@ -46,7 +46,7 @@
             </LinearGradient>
          </fill>
       </Rectangle>
-      <Label alignment="CENTER" layoutX="321.0" layoutY="23.0" onMouseClicked="#handleHomeClick" prefHeight="17.0" prefWidth="64.0" text="Home" textAlignment="CENTER" textFill="WHITE" underline="true">
+      <Label alignment="CENTER" layoutX="321.0" layoutY="23.0" onMouseClicked="#handleHomeClick" prefHeight="17.0" prefWidth="64.0" style="-fx-cursor: hand;" text="Home" textAlignment="CENTER" textFill="WHITE" underline="true">
          <font>
             <Font size="18.0" />
          </font>
@@ -81,7 +81,7 @@
          <image>
             <Image url="@images/default-avatar.jpg" />
          </image></ImageView>
-      <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="413.0" layoutY="20.0" onMouseClicked="#handleSearchButtoneClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="413.0" layoutY="20.0" onMouseClicked="#handleSearchButtoneClick" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
          <image>
             <Image url="@images/search-icon.png" />
          </image>
@@ -97,7 +97,7 @@
                <children>
                   <Pane fx:id="projectPane1" layoutX="16.0" layoutY="14.0" prefHeight="153.0" prefWidth="495.0" style="-fx-background-color: #6e7383;">
                      <children>
-                        <Button fx:id="projectView1" layoutX="213.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleViewButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e;" text="View" textFill="WHITE">
+                        <Button fx:id="projectView1" layoutX="213.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleViewButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="View" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -123,7 +123,7 @@
                   </Pane>
                   <Pane fx:id="projectPane2" layoutX="16.0" layoutY="177.0" prefHeight="153.0" prefWidth="495.0" style="-fx-background-color: #6e7383;">
                      <children>
-                        <Button fx:id="projectView2" layoutX="213.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleViewButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e;" text="View" textFill="WHITE">
+                        <Button fx:id="projectView2" layoutX="213.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleViewButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="View" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -149,7 +149,7 @@
                   </Pane>
                   <Pane fx:id="projectPane3" layoutX="16.0" layoutY="341.0" prefHeight="153.0" prefWidth="495.0" style="-fx-background-color: #6e7383;">
                      <children>
-                        <Button fx:id="projectView3" layoutX="213.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleViewButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e;" text="View" textFill="WHITE">
+                        <Button fx:id="projectView3" layoutX="213.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleViewButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="View" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -175,7 +175,7 @@
                   </Pane>
                   <Pane fx:id="projectPane4" layoutX="16.0" layoutY="504.0" prefHeight="153.0" prefWidth="495.0" style="-fx-background-color: #6e7383;">
                      <children>
-                        <Button fx:id="projectView4" layoutX="213.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleViewButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e;" text="View" textFill="WHITE">
+                        <Button fx:id="projectView4" layoutX="213.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleViewButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="View" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -213,7 +213,7 @@
             <Font size="14.0" />
          </font>
       </TextField>
-      <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="164.0" layoutY="891.0" onMouseClicked="#handleSearchButtoneClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="164.0" layoutY="891.0" onMouseClicked="#handleSearchButtoneClick" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
          <image>
             <Image url="@images/search-icon.png" />
          </image>

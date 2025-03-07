@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="953.0" maxWidth="610.0" minHeight="953.0" minWidth="610.0" prefHeight="953.0" prefWidth="610.0" style="-fx-background-color: #3a3e4d;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.comp4420.project_portfolio.view.codebehind.ProjectPageView">
+<AnchorPane fx:id="anchorPane" maxHeight="953.0" maxWidth="610.0" minHeight="953.0" minWidth="610.0" prefHeight="953.0" prefWidth="610.0" style="-fx-background-color: #3a3e4d;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.comp4420.project_portfolio.view.codebehind.ProjectPageView">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="10.0" focusTraversable="true" height="73.0" stroke="#3a3e4d00" strokeType="INSIDE" width="610.0">
          <fill>
@@ -47,7 +47,7 @@
             </LinearGradient>
          </fill>
       </Rectangle>
-      <Label alignment="CENTER" layoutX="321.0" layoutY="23.0" onMouseClicked="#handleHomeClick" prefHeight="17.0" prefWidth="64.0" text="Home" textAlignment="CENTER" textFill="WHITE" underline="true">
+      <Label alignment="CENTER" layoutX="321.0" layoutY="23.0" onMouseClicked="#handleHomeClick" prefHeight="17.0" prefWidth="64.0" style="-fx-cursor: hand;" text="Home" textAlignment="CENTER" textFill="WHITE" underline="true">
          <font>
             <Font size="18.0" />
          </font>
@@ -77,18 +77,18 @@
          <image>
             <Image url="@images/default-avatar.jpg" />
          </image></ImageView>
-      <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="413.0" layoutY="20.0" onMouseClicked="#handleSearchButtoneClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="413.0" layoutY="20.0" onMouseClicked="#handleSearchButtoneClick" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
          <image>
             <Image url="@images/search-icon.png" />
          </image>
       </ImageView>
-      <Button fx:id="edit" layoutX="469.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleEditButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e;" text="Edit" textFill="WHITE">
+      <Button fx:id="edit" layoutX="469.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleEditButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Edit" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
       <TextArea editable="false" layoutX="233.0" layoutY="286.0" prefHeight="119.0" prefWidth="311.0" promptText="This is my amazing project. Thanks for viewing!!!" wrapText="true" />
-      <Button fx:id="backButton" layoutX="270.0" layoutY="906.0" mnemonicParsing="false" onAction="#handleBackButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e;" text="Back" textFill="WHITE">
+      <Button fx:id="backButton" layoutX="270.0" layoutY="906.0" mnemonicParsing="false" onAction="#handleBackButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Back" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
@@ -115,9 +115,9 @@
          </font>
       </Label>
       <Separator layoutX="49.0" layoutY="423.0" prefHeight="6.0" prefWidth="513.0" />
-      <Hyperlink fx:id="projectHyperlink" layoutX="241.0" layoutY="238.0" onAction="#handleProjectHyperlinkClick" prefHeight="24.0" prefWidth="299.0" text="Hyperlink" underline="true" />
-      <ListView fx:id="folderListView" layoutX="80.0" layoutY="452.0" onMouseClicked="#handleFolderClick" prefHeight="425.0" prefWidth="451.0" />
-      <Button fx:id="upload" layoutX="393.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleUploadButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e;" text="Upload" textFill="WHITE">
+      <Hyperlink fx:id="projectHyperlink" layoutX="241.0" layoutY="238.0" onAction="#handleProjectHyperlinkClick" prefHeight="24.0" prefWidth="299.0" style="-fx-cursor: hand;" text="Hyperlink" underline="true" />
+      <ListView fx:id="folderListView" layoutX="80.0" layoutY="452.0" prefHeight="425.0" prefWidth="451.0" />
+      <Button fx:id="upload" layoutX="393.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleUploadButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Upload" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
@@ -131,5 +131,10 @@
             </AnchorPane>
         </content>
       </ScrollPane>
+      <Button fx:id="save" layoutX="469.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleSaveButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Save" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
