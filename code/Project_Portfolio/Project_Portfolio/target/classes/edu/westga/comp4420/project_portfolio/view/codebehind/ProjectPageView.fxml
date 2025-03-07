@@ -62,7 +62,7 @@
             <Font size="14.0" />
          </font>
       </TextField>
-      <Label fx:id="userName" alignment="CENTER" layoutX="60.0" layoutY="163.0" prefHeight="35.0" prefWidth="490.0" text="Project Title" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="projectTitleLabel" alignment="CENTER" layoutX="60.0" layoutY="163.0" prefHeight="35.0" prefWidth="490.0" text="Project Title" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
@@ -82,12 +82,12 @@
             <Image url="@images/search-icon.png" />
          </image>
       </ImageView>
-      <Button fx:id="edit" layoutX="469.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleEditButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Edit" textFill="WHITE">
+      <Button fx:id="editButton" layoutX="469.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleEditButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Edit" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <TextArea editable="false" layoutX="233.0" layoutY="286.0" prefHeight="119.0" prefWidth="311.0" promptText="This is my amazing project. Thanks for viewing!!!" wrapText="true" />
+      <TextArea fx:id="descriptionTextArea" editable="false" layoutX="233.0" layoutY="286.0" prefHeight="119.0" prefWidth="311.0" promptText="This is my amazing project. Thanks for viewing!!!" wrapText="true" />
       <Button fx:id="backButton" layoutX="270.0" layoutY="906.0" mnemonicParsing="false" onAction="#handleBackButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Back" textFill="WHITE">
          <font>
             <Font size="14.0" />
@@ -103,21 +103,21 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField editable="false" layoutX="235.0" layoutY="238.0" prefHeight="25.0" prefWidth="311.0" />
-      <Label fx:id="userName1" alignment="TOP_LEFT" layoutX="70.0" layoutY="107.0" prefHeight="35.0" prefWidth="311.0" text="userName" textAlignment="CENTER" textFill="WHITE">
+      <TextField fx:id="hyperLinkTextField" editable="false" layoutX="235.0" layoutY="238.0" prefHeight="25.0" prefWidth="311.0" />
+      <Label fx:id="userName" alignment="TOP_LEFT" layoutX="70.0" layoutY="107.0" prefHeight="35.0" prefWidth="311.0" text="userName" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="59.0" layoutY="382.0" prefHeight="27.0" prefWidth="161.0" text="Last Edited:" textAlignment="CENTER" textFill="WHITE" underline="true">
+      <Label fx:id="lastEditedLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="59.0" layoutY="382.0" prefHeight="27.0" prefWidth="161.0" text="Last Edited:" textAlignment="CENTER" textFill="WHITE" underline="true">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
       <Separator layoutX="49.0" layoutY="423.0" prefHeight="6.0" prefWidth="513.0" />
-      <Hyperlink fx:id="projectHyperlink" layoutX="241.0" layoutY="238.0" onAction="#handleProjectHyperlinkClick" prefHeight="24.0" prefWidth="299.0" style="-fx-cursor: hand;" text="Hyperlink" underline="true" />
+      <Hyperlink fx:id="projectHyperlink" layoutX="241.0" layoutY="238.0" onAction="#handleProjectHyperlinkClick" prefHeight="24.0" prefWidth="293.0" style="-fx-cursor: hand;" text="Hyperlink" underline="true" />
       <ListView fx:id="folderListView" layoutX="80.0" layoutY="452.0" prefHeight="425.0" prefWidth="451.0" />
-      <Button fx:id="upload" layoutX="393.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleUploadButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Upload" textFill="WHITE">
+      <Button fx:id="uploadButton" layoutX="393.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleUploadButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Upload" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
@@ -126,15 +126,16 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="557.0" prefWidth="424.0">
                <children>
-                  <TextArea fx:id="codeTextArea" layoutX="5.0" layoutY="3.0" prefHeight="548.0" prefWidth="413.0" />
+                  <TextArea fx:id="codeTextArea" editable="false" layoutX="5.0" layoutY="3.0" prefHeight="548.0" prefWidth="413.0" />
                </children>
             </AnchorPane>
         </content>
       </ScrollPane>
-      <Button fx:id="save" layoutX="469.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleSaveButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Save" textFill="WHITE">
+      <Button fx:id="saveButton" layoutX="469.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleSaveButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Save" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
+      <TextField fx:id="projectNameTextField" alignment="CENTER" layoutX="149.0" layoutY="168.0" prefHeight="35.0" prefWidth="311.0" promptText="Project Name" />
    </children>
 </AnchorPane>

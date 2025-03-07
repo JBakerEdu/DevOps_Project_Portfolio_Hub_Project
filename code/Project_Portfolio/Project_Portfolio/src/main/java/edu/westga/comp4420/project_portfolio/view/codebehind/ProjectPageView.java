@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -24,6 +25,8 @@ import java.util.List;
 import javafx.stage.DirectoryChooser;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 /**
@@ -51,7 +54,7 @@ public class ProjectPageView {
     private ScrollPane codeTextAreaPane;
 
     @FXML
-    private Button edit;
+    private Button editButton;
 
     @FXML
     private ListView<String> folderListView;
@@ -61,24 +64,41 @@ public class ProjectPageView {
 
     @FXML
     private ImageView profilePicture;
+	
+	@FXML
+    private TextArea descriptionTextArea;
 
     @FXML
     private Hyperlink projectHyperlink;
 	
 	@FXML
-    private Button save;
+    private Button saveButton;
 
     @FXML
-    private Button upload;
+    private Button uploadButton;
 
     @FXML
     private Label userName;
+	
+	@FXML
+    private TextField projectNameTextField;
 
     @FXML
-    private Label userName1;
+    private Label projectTitleLabel;
+	
+	@FXML
+    private Label lastEditedLabel;
+	
+	@FXML
+    private TextField hyperLinkTextField;
+
 
     @FXML
 	void handleBackButtonClick(ActionEvent event) {
+		if (this.initialDirectory == null || this.currentDirectory == null) {
+			this.showAlert("Info", "No file uploaded.");
+			return;
+		}
 		if (this.codeTextAreaPane.isVisible()) {
 			this.codeTextAreaPane.setVisible(false);
 			this.folderListView.setVisible(true);
@@ -96,12 +116,45 @@ public class ProjectPageView {
 
     @FXML
     void handleEditButtonClick(ActionEvent event) {
-
+		this.codeTextAreaPane.setVisible(false);
+		this.folderListView.setVisible(true);
+		this.uploadButton.setVisible(true);
+		this.saveButton.setVisible(true);
+		this.projectNameTextField.setVisible(true);
+		this.projectTitleLabel.setVisible(false);
+		this.editButton.setVisible(false);
+		this.descriptionTextArea.setEditable(true);
+		this.projectHyperlink.setVisible(false);
+		this.hyperLinkTextField.setEditable(true);
     }
 	
 	@FXML
     void handleSaveButtonClick(ActionEvent event) {
-
+		this.codeTextAreaPane.setVisible(false);
+		this.folderListView.setVisible(true);
+		this.uploadButton.setVisible(false);
+		this.saveButton.setVisible(false);
+		this.projectNameTextField.setVisible(false);
+		this.projectTitleLabel.setVisible(true);
+		this.editButton.setVisible(true);
+		this.descriptionTextArea.setEditable(false);
+		this.projectHyperlink.setVisible(true);
+		this.hyperLinkTextField.setEditable(false);
+		this.hyperLinkTextField.clear();
+		
+		LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = currentDateTime.format(formatter);
+        this.lastEditedLabel.setText("Last Edited: " + formattedDate);
+		this.projectTitleLabel.setText(this.projectNameTextField.getText());
+		
+		String link = this.hyperLinkTextField.getText();
+		if (link != null && !link.trim().isEmpty()) {
+			this.projectHyperlink.setText(link);
+			
+		} else {
+			this.projectHyperlink.setText("No link provided");
+		}
     }
 
     @FXML
@@ -115,9 +168,19 @@ public class ProjectPageView {
     }
 
     @FXML
-    void handleProjectHyperlinkClick(ActionEvent event) {
-		
-    }
+	void handleProjectHyperlinkClick(ActionEvent event) {
+		String link = this.projectHyperlink.getText();
+		if (link != null && !link.trim().isEmpty()) {
+			try {
+				java.awt.Desktop.getDesktop().browse(java.net.URI.create(link));
+			} catch (IOException e) {
+				e.printStackTrace();
+				this.showAlert("Error", "Failed to open the link.");
+			}
+		} else {
+			this.showAlert("Error", "No link provided.");
+		}
+	}
 
     @FXML
     void handleSearchBar(ActionEvent event) {
@@ -200,6 +263,16 @@ public class ProjectPageView {
 	@FXML
 	public void initialize() {
 		this.codeTextAreaPane.setVisible(false);
+		this.folderListView.setVisible(true);
+		this.uploadButton.setVisible(false);
+		this.saveButton.setVisible(false);
+		this.projectNameTextField.setVisible(false);
+		this.projectTitleLabel.setVisible(true);
+		this.editButton.setVisible(true);
+		this.lastEditedLabel.setText("Last Edited: Not yet saved");
+		this.projectHyperlink.setText("No link provided");
+		
+		
 		this.bindPropertiesAndListners();
 	}
 	
