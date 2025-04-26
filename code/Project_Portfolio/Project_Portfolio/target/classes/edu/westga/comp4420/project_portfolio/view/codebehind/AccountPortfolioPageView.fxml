@@ -85,12 +85,17 @@
             <Image url="@images/search-icon.png" />
          </image>
       </ImageView>
+      <Button fx:id="save" layoutX="469.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleSaveButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Save" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
       <Button fx:id="edit" layoutX="469.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleEditButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Edit" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <TextArea editable="false" layoutX="202.0" layoutY="198.0" prefHeight="121.0" prefWidth="336.0" promptText="This is my famous account. Thank you for viewing. " wrapText="true" />
+      <TextArea fx:id="userDescription" editable="false" layoutX="202.0" layoutY="198.0" prefHeight="121.0" prefWidth="336.0" promptText="This is my famous account. Thank you for viewing. " wrapText="true" />
       <Button fx:id="nextProjectsButton" layoutX="483.0" layoutY="859.0" mnemonicParsing="false" onAction="#handleNextProjectsButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Next 3" textFill="WHITE">
          <font>
             <Font size="14.0" />
@@ -200,6 +205,11 @@
          </image>
       </ImageView>
       <Button fx:id="addProjectsButton" layoutX="284.0" layoutY="859.0" mnemonicParsing="false" onAction="#handleAddProjectButtonClick" prefHeight="30.0" prefWidth="41.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="+" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="cancel" layoutX="389.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleCancelButtonClick" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #d4124e; -fx-cursor: hand;" text="Cancel" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>

@@ -2,6 +2,7 @@ package edu.westga.comp4420.project_portfolio.view.codebehind;
 
 import edu.westga.comp4420.project_portfolio.model.Session;
 import edu.westga.comp4420.project_portfolio.model.User;
+import edu.westga.comp4420.project_portfolio.model.AccountContext;
 import edu.westga.comp4420.project_portfolio.model.AccountManager;
 
 import javafx.event.ActionEvent;
@@ -66,6 +67,7 @@ public class LoginPageView {
 		}
 
 		Session.getInstance().login(user);
+		AccountContext.getInstance().setUserToView(user);
 		GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
 	}
 
@@ -102,10 +104,8 @@ public class LoginPageView {
 			this.accountHeader.setText("Account");
 		}
 		this.hideAllErrors();
-		
 		this.loginSubmitButton.setDisable(true);
 
-		// Add listeners to check fields
 		this.userNameTextFeild.textProperty().addListener((observable, oldValue, newValue) -> {
 			this.checkFieldsAndToggleLoginButton();
 		});

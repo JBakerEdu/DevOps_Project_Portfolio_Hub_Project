@@ -1,6 +1,11 @@
 package edu.westga.comp4420.project_portfolio.view.codebehind;
 
 import edu.westga.comp4420.project_portfolio.model.Session;
+import edu.westga.comp4420.project_portfolio.model.User;
+import edu.westga.comp4420.project_portfolio.model.AccountContext;
+import edu.westga.comp4420.project_portfolio.model.Project;
+import edu.westga.comp4420.project_portfolio.model.ProjectContext;
+
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,6 +44,7 @@ public class ProjectPageView {
 	private File currentDirectory;
 	private File initialDirectory;
 	private String selectedItem;
+	private Project currentProject;
 	
 	@FXML
     private AnchorPane anchorPane;
@@ -118,6 +124,9 @@ public class ProjectPageView {
 
     @FXML
     void handleEditButtonClick(ActionEvent event) {
+		String selectedProjectName = this.projectTitleLabel.getText();
+		this.currentProject = Session.getInstance().getCurrentUser().getProjectManager().getProjectByName(selectedProjectName);
+	
 		this.codeTextAreaPane.setVisible(false);
 		this.folderListView.setVisible(true);
 		this.uploadButton.setVisible(true);
@@ -128,10 +137,86 @@ public class ProjectPageView {
 		this.descriptionTextArea.setEditable(true);
 		this.projectHyperlink.setVisible(false);
 		this.hyperLinkTextField.setEditable(true);
+		
+		if (this.currentProject.getHyperlink() != null) {
+			this.hyperLinkTextField.setText(this.currentProject.getHyperlink());
+		} else {
+			this.hyperLinkTextField.clear();
+		}
     }
 	
 	@FXML
-    void handleSaveButtonClick(ActionEvent event) {
+	void handleSaveButtonClick(ActionEvent event) {
+		if (Session.getInstance().getCurrentUser() == null) {
+			this.showAlert("Error", "You must be logged in to save a project.");
+			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
+			return;
+		}
+
+		if (this.currentProject == null) {
+			this.showAlert("Error", "No project selected to save.");
+			return;
+		}
+
+		if (!this.validateSaveInputs()) {
+			return;
+		}
+
+		this.updateProjectData();
+		this.handleSaveVisiblity();
+		this.updateProjectDisplay();
+		this.showAlert("Success", "Project updated successfully!");
+
+		this.currentProject = null;
+	}
+
+	
+	private boolean validateSaveInputs() {
+		String projectName = this.projectNameTextField.getText();
+
+		if (projectName == null || projectName.isBlank()) {
+			this.showAlert("Error", "Project must have a name.");
+			return false;
+		}
+
+		return true;
+	}
+
+	
+	private void updateProjectData() {
+		String projectName = this.projectNameTextField.getText();
+		String projectDescription = this.descriptionTextArea.getText();
+		String projectLink = this.hyperLinkTextField.getText();
+		File rootDirectory = this.initialDirectory;
+
+		this.currentProject.setName(projectName);
+		this.currentProject.setDescription(projectDescription);
+		this.currentProject.setHyperlink(projectLink);
+    
+		if (rootDirectory != null) {
+			this.currentProject.setRootDirectory(rootDirectory);
+		}
+	}
+
+	private void updateProjectDisplay() {
+		String projectName = this.projectNameTextField.getText();
+		String projectLink = this.hyperLinkTextField.getText();
+
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String formattedDate = currentDateTime.format(formatter);
+
+		this.lastEditedLabel.setText("Last Edited: " + formattedDate);
+		this.projectTitleLabel.setText(projectName);
+
+		if (projectLink != null && !projectLink.trim().isEmpty()) {
+			this.projectHyperlink.setText(projectLink);
+		} else {
+			this.projectHyperlink.setText("No link provided");
+		}
+	}
+	
+	private void handleSaveVisiblity() {
 		this.codeTextAreaPane.setVisible(false);
 		this.folderListView.setVisible(true);
 		this.uploadButton.setVisible(false);
@@ -143,21 +228,8 @@ public class ProjectPageView {
 		this.projectHyperlink.setVisible(true);
 		this.hyperLinkTextField.setEditable(false);
 		this.hyperLinkTextField.clear();
-		
-		LocalDateTime currentDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = currentDateTime.format(formatter);
-        this.lastEditedLabel.setText("Last Edited: " + formattedDate);
-		this.projectTitleLabel.setText(this.projectNameTextField.getText());
-		
-		String link = this.hyperLinkTextField.getText();
-		if (link != null && !link.trim().isEmpty()) {
-			this.projectHyperlink.setText(link);
-			
-		} else {
-			this.projectHyperlink.setText("No link provided");
-		}
-    }
+	}
+
 
     @FXML
     void handleHomeClick(MouseEvent event) {
@@ -180,7 +252,6 @@ public class ProjectPageView {
 			try {
 				java.awt.Desktop.getDesktop().browse(java.net.URI.create(link));
 			} catch (IOException e) {
-				e.printStackTrace();
 				this.showAlert("Error", "Failed to open the link.");
 			}
 		} else {
@@ -268,13 +339,9 @@ public class ProjectPageView {
 	
 	@FXML
 	public void initialize() {
-		if (Session.getInstance().getCurrentUser() != null) {
-			String username = Session.getInstance().getCurrentUser().getUsername();
-			this.accountHeader.setText(username);
-		} else {
-			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
-			this.accountHeader.setText("Account");
-		}
+		this.initUserNames();
+		this.initProjectDetails();
+		
 		this.codeTextAreaPane.setVisible(false);
 		this.folderListView.setVisible(true);
 		this.uploadButton.setVisible(false);
@@ -285,9 +352,57 @@ public class ProjectPageView {
 		this.lastEditedLabel.setText("Last Edited: Not yet saved");
 		this.projectHyperlink.setText("No link provided");
 		
-		
 		this.bindPropertiesAndListners();
 	}
+	
+	private void initUserNames() {
+		if (Session.getInstance().getCurrentUser() != null) {
+			String username = Session.getInstance().getCurrentUser().getUsername();
+			this.accountHeader.setText(username);
+			if (AccountContext.getInstance().hasUserToView()) {
+				User viewed = AccountContext.getInstance().getUserToView();
+				this.userName.setText(viewed.getUsername());
+			} else {
+				this.userName.setText("Error: Select Another User");
+			}
+		} else {
+			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
+			this.accountHeader.setText("Account");
+		}
+	}
+	
+	private void initProjectDetails() {
+		if (ProjectContext.getInstance().hasSelectedProject()) {
+			Project selectedProject = ProjectContext.getInstance().getSelectedProject();
+			this.projectTitleLabel.setText(selectedProject.getName());
+			this.projectNameTextField.setText(selectedProject.getName());
+			this.descriptionTextArea.setText(selectedProject.getDescription());
+			if (selectedProject.getHyperlink() != null && !selectedProject.getHyperlink().isBlank()) {
+				this.projectHyperlink.setText(selectedProject.getHyperlink());
+			} else {
+				this.projectHyperlink.setText("No link provided");
+			}
+			this.hyperLinkTextField.clear();
+
+			if (selectedProject.getLastEdited() != null) {
+				this.lastEditedLabel.setText("Last Edited: " + selectedProject.getFormattedLastEdited());
+			} else {
+				this.lastEditedLabel.setText("Last Edited: Unknown");
+			}
+			if (selectedProject.getRootDirectory() != null) {
+				this.initialDirectory = selectedProject.getRootDirectory();
+				this.currentDirectory = this.initialDirectory;
+				this.updateFolderList(this.currentDirectory);
+			} else {
+				this.folderListView.getItems().clear();
+				this.folderListView.getItems().add("No uploaded files for this project.");
+			}
+		} else {
+			this.showAlert("Error", "No project selected to view.");
+			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
+		}
+	}
+
 	
 	private void bindPropertiesAndListners() {
 		this.folderListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

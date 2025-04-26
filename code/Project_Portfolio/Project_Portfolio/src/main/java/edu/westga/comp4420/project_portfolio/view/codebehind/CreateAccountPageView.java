@@ -2,6 +2,7 @@ package edu.westga.comp4420.project_portfolio.view.codebehind;
 
 import edu.westga.comp4420.project_portfolio.model.Session;
 import edu.westga.comp4420.project_portfolio.model.User;
+import edu.westga.comp4420.project_portfolio.model.AccountContext;
 import edu.westga.comp4420.project_portfolio.model.AccountManager;
 
 import javafx.event.ActionEvent;
@@ -70,6 +71,7 @@ public class CreateAccountPageView {
 		if (success) {
 			User newUser = AccountManager.validateLogin(username, password);
 			Session.getInstance().login(newUser);
+			AccountContext.getInstance().setUserToView(newUser);
 			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
 		} else {
 			this.errorNotValidUsername.setVisible(true);

@@ -1,6 +1,12 @@
 package edu.westga.comp4420.project_portfolio.view.codebehind;
 
 import edu.westga.comp4420.project_portfolio.model.Session;
+import edu.westga.comp4420.project_portfolio.model.User;
+import edu.westga.comp4420.project_portfolio.model.AccountContext;
+import edu.westga.comp4420.project_portfolio.model.Project;
+import edu.westga.comp4420.project_portfolio.model.ProjectContext;
+
+import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +26,9 @@ import javafx.scene.layout.Pane;
  * @version Spring 2025
  */
 public class AccountPortfolioPageView {
+	private List<Project> currentProjects;
+	private int currentPage;
+	private final int projectsPerPage = 3;
 	
 	@FXML
     private AnchorPane anchorPane;
@@ -29,6 +38,9 @@ public class AccountPortfolioPageView {
 
     @FXML
     private Button addProjectsButton;
+	
+	@FXML
+    private Button save;
 
     @FXML
     private Button delete1;
@@ -41,6 +53,9 @@ public class AccountPortfolioPageView {
 
     @FXML
     private Button edit;
+	
+	@FXML
+    private Button cancel;
 	
 	@FXML
     private Button logout;
@@ -56,6 +71,9 @@ public class AccountPortfolioPageView {
 
     @FXML
     private ImageView profilePicture;
+	
+	@FXML
+    private TextArea userDescription;
 
     @FXML
     private TextArea projectDescription1;
@@ -107,18 +125,95 @@ public class AccountPortfolioPageView {
 
     @FXML
     void handleAddProjectButtonClick(ActionEvent event) {
+		if (Session.getInstance().getCurrentUser() == null) {
+			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
+			return;
+		}
 
+		String defaultName = "New Project";
+		String defaultDescription = "Project Description Here";
+		String defaultLink = "";
+
+		Session.getInstance().getCurrentUser().getProjectManager().addProject(defaultName, defaultDescription, defaultLink, null);
+
+		this.loadUserProjects(Session.getInstance().getCurrentUser());
     }
 
     @FXML
     void handleDeleteProjectsButtonClick(ActionEvent event) {
+		Object source = event.getSource();
 
+		int indexOffset = 0;
+
+		if (source == this.delete1) {
+			indexOffset = 0;
+		} else if (source == this.delete2) {
+			indexOffset = 1;
+		} else if (source == this.delete3) {
+			indexOffset = 2;
+		} else {
+			return;
+		}
+
+		int projectIndex = (this.currentPage * this.projectsPerPage) + indexOffset;
+
+		if (projectIndex < this.currentProjects.size()) {
+			boolean confirmed = this.confirmDeletion();
+
+			if (confirmed) {
+				Project projectToDelete = this.currentProjects.get(projectIndex);
+				Session.getInstance().getCurrentUser().getProjectManager().removeProject(projectToDelete);
+
+				this.loadUserProjects(Session.getInstance().getCurrentUser());
+				this.showAlert("Deleted", "The project has been deleted successfully.");
+			}
+		}
     }
+	
+	private void showAlert(String title, String message) {
+		javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
+
+	
+	private boolean confirmDeletion() {
+		javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Confirm Deletion");
+		alert.setHeaderText("Are you sure you want to delete this project?");
+		alert.setContentText("This action cannot be undone.");
+		return alert.showAndWait().filter(response -> response == javafx.scene.control.ButtonType.OK).isPresent();
+	}
+
 
     @FXML
     void handleEditButtonClick(ActionEvent event) {
-
+		this.switichEditMode(true);
+		
     }
+	
+	@FXML
+    void handleSaveButtonClick(ActionEvent event) {
+		this.switichEditMode(false);
+		Session.getInstance().getCurrentUser().setDescription(this.userDescription.getText());
+		
+    }
+	
+	@FXML
+    void handleCancelButtonClick(ActionEvent event) {
+		this.userDescription.setText(Session.getInstance().getCurrentUser().getDescription());
+		this.switichEditMode(false);
+    }
+	
+	private void switichEditMode(boolean isEditing) {
+		this.edit.setVisible(!isEditing);
+		this.logout.setVisible(!isEditing);
+		this.save.setVisible(isEditing);
+		this.cancel.setVisible(isEditing);
+		this.userDescription.setEditable(isEditing);
+	}
 	
 	@FXML
     void handleLogoutButtonClick(ActionEvent event) {
@@ -133,12 +228,20 @@ public class AccountPortfolioPageView {
 
     @FXML
     void handleLastProejctsButtonClick(ActionEvent event) {
-
+		if (this.currentPage > 0) {
+			this.currentPage--;
+			this.updateProjectDisplay();
+		}
     }
 
     @FXML
     void handleNextProjectsButtonClick(ActionEvent event) {
+		int totalPages = (int) Math.ceil((double) this.currentProjects.size() / this.projectsPerPage);
 
+		if (this.currentPage < totalPages - 1) {
+			this.currentPage++;
+			this.updateProjectDisplay();
+		}
     }
 
     @FXML
@@ -162,7 +265,27 @@ public class AccountPortfolioPageView {
 
     @FXML
     void handleViewButtonClick(ActionEvent event) {
+		Object source = event.getSource();
 
+		int indexOffset = 0;
+
+		if (source == this.projectView1) {
+			indexOffset = 0;
+		} else if (source == this.projectView2) {
+			indexOffset = 1;
+		} else if (source == this.projectView3) {
+			indexOffset = 2;
+		} else {
+			return;
+		}
+
+		int projectIndex = (this.currentPage * this.projectsPerPage) + indexOffset;
+
+		if (projectIndex < this.currentProjects.size()) {
+			Project selectedProject = this.currentProjects.get(projectIndex);
+			ProjectContext.getInstance().setSelectedProject(selectedProject);
+			GuiHelper.switchView(this.anchorPane, Views.PROJECTS);
+		}
     }
 	
 	/**
@@ -181,17 +304,87 @@ public class AccountPortfolioPageView {
 	*/
 	public void setAnchorPane(AnchorPane tempAnchorPane) {
 		this.anchorPane = tempAnchorPane;
+		
 	}
 	
 	@FXML
 	void initialize() {
+		this.currentPage = 0;
+		this.initUserNames();
+	}
+
+	private void initUserNames() {
 		if (Session.getInstance().getCurrentUser() != null) {
 			String username = Session.getInstance().getCurrentUser().getUsername();
 			this.accountHeader.setText(username);
+
+			if (AccountContext.getInstance().hasUserToView()) {
+				User viewed = AccountContext.getInstance().getUserToView();
+				this.userName.setText(viewed.getUsername());
+				this.loadUserProjects(viewed);
+			} else {
+				this.userName.setText("Error: Select Another User");
+			}
 		} else {
 			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
 			this.accountHeader.setText("Account");
 		}
 	}
+
+	/**
+	* Loads the user's projects into the account page.
+	*
+	* @param user the user whose projects to display
+	*/
+	private void loadUserProjects(User user) {
+		this.currentProjects = user.getProjectManager().getProjects();
+		this.currentPage = 0;
+		this.updateProjectDisplay();
+	}
+
+	private void updateProjectDisplay() {
+    // First clear everything
+		this.projectEdit1.clear();
+		this.projectEdit2.clear();
+		this.projectEdit3.clear();
+		this.projectDescription1.clear();
+		this.projectDescription2.clear();
+		this.projectDescription3.clear();
+
+		this.projectPane1.setVisible(false);
+		this.projectPane2.setVisible(false);
+		this.projectPane3.setVisible(false);
+
+		int startIndex = this.currentPage * this.projectsPerPage;
+
+		if (startIndex < this.currentProjects.size()) {
+			this.projectPane1.setVisible(true);
+			this.projectEdit1.setText(this.currentProjects.get(startIndex).getName());
+			this.projectDescription1.setText(this.currentProjects.get(startIndex).getDescription());
+		}
+
+		if (startIndex + 1 < this.currentProjects.size()) {
+			this.projectPane2.setVisible(true);
+			this.projectEdit2.setText(this.currentProjects.get(startIndex + 1).getName());
+			this.projectDescription2.setText(this.currentProjects.get(startIndex + 1).getDescription());
+		}
+
+		if (startIndex + 2 < this.currentProjects.size()) {
+			this.projectPane3.setVisible(true);
+			this.projectEdit3.setText(this.currentProjects.get(startIndex + 2).getName());
+			this.projectDescription3.setText(this.currentProjects.get(startIndex + 2).getDescription());
+		}
+
+		this.updateNavigationButtons();
+	}
+	
+	private void updateNavigationButtons() {
+		int totalPages = (int) Math.ceil((double) this.currentProjects.size() / this.projectsPerPage);
+
+		this.lastProjectsButton.setDisable(this.currentPage == 0);
+		this.nextProjectsButton.setDisable(this.currentPage >= totalPages - 1);
+	}
+
+
 
 }
