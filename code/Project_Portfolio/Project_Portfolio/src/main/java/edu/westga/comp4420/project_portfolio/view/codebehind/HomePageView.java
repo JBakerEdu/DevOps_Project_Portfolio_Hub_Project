@@ -1,7 +1,10 @@
 package edu.westga.comp4420.project_portfolio.view.codebehind;
 
+import edu.westga.comp4420.project_portfolio.model.Session;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -20,6 +23,9 @@ public class HomePageView {
 	
 	@FXML
     private AnchorPane anchorPane;
+	
+	@FXML
+    private Label accountHeader;
 
     @FXML
     private Button login;
@@ -91,22 +97,28 @@ public class HomePageView {
 
     @FXML
     void handleLoginButtonClick(ActionEvent event) {
-		GuiHelper.switchView(this.anchorPane, Views.LOGIN);
+		if (Session.getInstance().getCurrentUser() == null) {
+			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
+		}
     }
 
     @FXML
     void handlePersonalAccountClick(MouseEvent event) {
-		GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
+		if (Session.getInstance().getCurrentUser() != null) {
+			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
+		} else {
+			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
+		}
     }
 
     @FXML
     void handleSearchBar(ActionEvent event) {
-
+		// Not implemented yet
     }
 
     @FXML
     void handleSearchButtoneClick(MouseEvent event) {
-
+		// Not implemented yet
     }
 
     @FXML
@@ -133,8 +145,15 @@ public class HomePageView {
 	}
 	
 	@FXML
-	public void initialize() {
-		
+	void initialize() {
+		if (Session.getInstance().getCurrentUser() != null) {
+			String username = Session.getInstance().getCurrentUser().getUsername();
+			this.accountHeader.setText(username);
+			this.login.setDisable(true);
+			this.login.setVisible(false);
+		} else {
+			this.accountHeader.setText("Account");
+		}
 	}
 	
 }

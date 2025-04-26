@@ -1,10 +1,12 @@
 package edu.westga.comp4420.project_portfolio.view.codebehind;
 
+import edu.westga.comp4420.project_portfolio.model.Session;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -40,6 +42,9 @@ public class ProjectPageView {
 	
 	@FXML
     private AnchorPane anchorPane;
+	
+	@FXML
+    private Label accountHeader;
 
     @FXML
     private Button backButton;
@@ -161,7 +166,11 @@ public class ProjectPageView {
 
     @FXML
     void handlePersonalAccountClick(MouseEvent event) {
-		GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
+		if (Session.getInstance().getCurrentUser() != null) {
+			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
+		} else {
+			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
+		}
     }
 
     @FXML
@@ -181,12 +190,12 @@ public class ProjectPageView {
 
     @FXML
     void handleSearchBar(ActionEvent event) {
-		
+		// Not implemented yet
     }
 
     @FXML
     void handleSearchButtoneClick(MouseEvent event) {
-		
+		// Not implemented yet
     }
 
     @FXML
@@ -259,6 +268,13 @@ public class ProjectPageView {
 	
 	@FXML
 	public void initialize() {
+		if (Session.getInstance().getCurrentUser() != null) {
+			String username = Session.getInstance().getCurrentUser().getUsername();
+			this.accountHeader.setText(username);
+		} else {
+			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
+			this.accountHeader.setText("Account");
+		}
 		this.codeTextAreaPane.setVisible(false);
 		this.folderListView.setVisible(true);
 		this.uploadButton.setVisible(false);
@@ -287,5 +303,5 @@ public class ProjectPageView {
 			}
 		});
 	}
-
+	
 }

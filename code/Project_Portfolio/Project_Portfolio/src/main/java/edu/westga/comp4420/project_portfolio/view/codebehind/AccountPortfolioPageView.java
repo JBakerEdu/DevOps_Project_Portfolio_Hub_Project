@@ -23,6 +23,9 @@ public class AccountPortfolioPageView {
 	
 	@FXML
     private AnchorPane anchorPane;
+	
+	@FXML
+    private Label accountHeader;
 
     @FXML
     private Button addProjectsButton;
@@ -140,17 +143,21 @@ public class AccountPortfolioPageView {
 
     @FXML
     void handlePersonalAccountClick(MouseEvent event) {
-		GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
+		if (Session.getInstance().getCurrentUser() != null) {
+			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
+		} else {
+			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
+		}
     }
 
     @FXML
     void handleSearchBar(ActionEvent event) {
-
+		// Not implemented yet
     }
 
     @FXML
     void handleSearchButtoneClick(MouseEvent event) {
-
+		// Not implemented yet
     }
 
     @FXML
@@ -174,6 +181,17 @@ public class AccountPortfolioPageView {
 	*/
 	public void setAnchorPane(AnchorPane tempAnchorPane) {
 		this.anchorPane = tempAnchorPane;
+	}
+	
+	@FXML
+	void initialize() {
+		if (Session.getInstance().getCurrentUser() != null) {
+			String username = Session.getInstance().getCurrentUser().getUsername();
+			this.accountHeader.setText(username);
+		} else {
+			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
+			this.accountHeader.setText("Account");
+		}
 	}
 
 }

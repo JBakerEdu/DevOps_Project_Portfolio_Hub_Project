@@ -55,32 +55,65 @@ public class CreateAccountPageView {
 	private Button createAccountSubmitButton;
 
     @FXML
-    void handleCreateAccountButtonClick(ActionEvent event) {
+	void handleCreateAccountButtonClick(ActionEvent event) {
 		this.hideAllErrors();
 
-        String username = this.userNameTextFeild.getText();
-        String password = this.passwordTextFeild.getText();
-        String confirmPassword = this.confirmPasswordTextFeild.getText();
-        String email = this.emailTextFeild.getText();
+		if (!this.validateCreateAccountInputs()) {
+			return;
+		}
+
+		String username = this.userNameTextFeild.getText();
+		String password = this.passwordTextFeild.getText();
+		String email = this.emailTextFeild.getText();
+
+		boolean success = AccountManager.createAccount(username, password, email);
+		if (success) {
+			User newUser = AccountManager.validateLogin(username, password);
+			Session.getInstance().login(newUser);
+			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
+		} else {
+			this.errorNotValidUsername.setVisible(true);
+		}
+	}
+
+	/**
+	* Validates user inputs for creating an account.
+	* Shows all appropriate error messages.
+	*
+	* @return true if inputs are valid, false if there are errors
+	*/
+	private boolean validateCreateAccountInputs() {
+		boolean isValid = true;
+
+		String username = this.userNameTextFeild.getText();
+		String password = this.passwordTextFeild.getText();
+		String confirmPassword = this.confirmPasswordTextFeild.getText();
+		String email = this.emailTextFeild.getText();
+
+		if (!password.equals(confirmPassword)) {
+			this.errorNotConfirmedPassword.setVisible(true);
+			isValid = false;
+		}
+
+		if (!email.contains("@") || !email.contains(".")) {
+			this.errorNotValidEmail.setVisible(true);
+			isValid = false;
+		}
+
+		if (AccountManager.findUserByUsername(username) != null) {
+			this.errorNotValidUsername.setVisible(true);
+			isValid = false;
+		}
+
+		if (AccountManager.findUserByEmail(email) != null) {
+			this.errorNotValidEmail.setVisible(true);
+			isValid = false;
+		}
+		
+		return isValid;
+	}
 
 
-        if (!password.equals(confirmPassword)) {
-            this.errorNotConfirmedPassword.setVisible(true);
-            return;
-        }
-        if (!email.contains("@") || !email.contains(".")) {
-            this.errorNotValidEmail.setVisible(true);
-            return;
-        }
-        boolean success = AccountManager.createAccount(username, password, email);
-        if (success) {
-            User newUser = AccountManager.validateLogin(username, password);
-            Session.getInstance().login(newUser);
-            GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
-        } else {
-            this.errorNotValidUsername.setVisible(true);
-        }
-    }
 
     @FXML
     void handleHasAccountClick(MouseEvent event) {
@@ -94,7 +127,11 @@ public class CreateAccountPageView {
 
     @FXML
     void handlePersonalAccountClick(MouseEvent event) {
-		GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
+		if (Session.getInstance().getCurrentUser() != null) {
+			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
+		} else {
+			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
+		}
     }
 
     @FXML

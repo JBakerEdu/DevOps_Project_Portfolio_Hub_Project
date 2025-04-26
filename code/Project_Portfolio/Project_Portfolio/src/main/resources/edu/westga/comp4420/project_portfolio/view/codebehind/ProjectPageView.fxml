@@ -52,7 +52,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="47.0" layoutY="24.0" onMouseClicked="#handlePersonalAccountClick" prefHeight="27.0" prefWidth="81.0" style="-fx-cursor: hand;" text="Account" textAlignment="CENTER" textFill="WHITE" underline="true" wrapText="true">
+      <Label fx:id="accountHeader" alignment="CENTER" layoutX="47.0" layoutY="24.0" onMouseClicked="#handlePersonalAccountClick" prefHeight="27.0" prefWidth="81.0" style="-fx-cursor: hand;" text="Account" textAlignment="CENTER" textFill="WHITE" underline="true" wrapText="true">
          <font>
             <Font size="18.0" />
          </font>

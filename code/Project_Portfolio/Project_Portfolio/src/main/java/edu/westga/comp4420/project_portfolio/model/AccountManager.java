@@ -7,7 +7,10 @@ public class AccountManager {
     private static List<User> accounts = new ArrayList<>();
 
     public static boolean createAccount(String username, String password, String email) {
-        if (findUserByUsername(username) != null) {
+        if (findUserByUsernameOrEmail(username) != null) {
+            return false;
+        }
+		if (findUserByUsernameOrEmail(email) != null) {
             return false;
         }
         accounts.add(new User(username, password, email));
@@ -22,13 +25,32 @@ public class AccountManager {
         }
         return null;
     }
+	
+	public static User findUserByUsernameOrEmail(String input) {
+		for (User user : accounts) {
+			if (user.getUsername().equals(input) || user.getEmail().equals(input)) {
+				return user;
+			}
+		}
+		return null;
+	}
+	
+	public static User findUserByUsername(String username) {
+		for (User user : accounts) {
+			if (user.getUsername().equals(username)) {
+				return user;
+			}
+		}
+		return null;
+	}
 
-    private static User findUserByUsername(String username) {
-        for (User user : accounts) {
-            if (user.getUsername().equals(username)) {
-                return user;
-            }
-        }
-        return null;
-    }
+	public static User findUserByEmail(String email) {
+		for (User user : accounts) {
+			if (user.getEmail().equals(email)) {
+				return user;
+			}
+		}
+		return null;
+	}
+
 }
