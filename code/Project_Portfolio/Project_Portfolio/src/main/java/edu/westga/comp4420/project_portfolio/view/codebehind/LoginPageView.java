@@ -1,5 +1,9 @@
 package edu.westga.comp4420.project_portfolio.view.codebehind;
 
+import edu.westga.comp4420.project_portfolio.model.Session;
+import edu.westga.comp4420.project_portfolio.model.User;
+import edu.westga.comp4420.project_portfolio.model.AccountManager;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -38,12 +42,21 @@ public class LoginPageView {
 
     @FXML
     void handleLoginButtonClick(ActionEvent event) {
-
+		String username = this.userNameTextFeild.getText();
+		String password = this.passwordTextFeild.getText();
+    
+		User user = AccountManager.validateLogin(username, password);
+		if (user != null) {
+			Session.getInstance().login(user);
+			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
+		} else {
+			this.errorNotCorrectPassword.setVisible(true);
+		}
     }
 
     @FXML
     void handleNoAccountClick(MouseEvent event) {
-
+		GuiHelper.switchView(this.anchorPane, Views.CREATE_ACCOUNT);
     }
 
     @FXML

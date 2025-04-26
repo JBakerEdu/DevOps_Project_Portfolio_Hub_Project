@@ -1,8 +1,5 @@
 package edu.westga.comp4420.project_portfolio.view.codebehind;
 
-import edu.westga.comp4420.project_portfolio.model.GuiHelper;
-import edu.westga.comp4420.project_portfolio.model.Views;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -94,7 +91,7 @@ public class HomePageView {
 
     @FXML
     void handleLoginButtonClick(ActionEvent event) {
-
+		GuiHelper.switchView(this.anchorPane, Views.LOGIN);
     }
 
     @FXML
@@ -133,6 +130,11 @@ public class HomePageView {
 	*/
 	public void setAnchorPane(AnchorPane tempAnchorPane) {
 		this.anchorPane = tempAnchorPane;
+	}
+	
+	@FXML
+	public void initialize() {
+		
 	}
 	
 }

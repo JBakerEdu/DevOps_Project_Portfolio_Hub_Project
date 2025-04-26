@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="9.3">
-<file name="C:\Users\jb00645\Desktop\temp Dev Folder\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\Main.java">
+<file name="C:\Users\jb00645\Desktop\DevOpsSprint 2 date 4-25-25\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\Main.java">
 </file>
-<file name="C:\Users\jb00645\Desktop\temp Dev Folder\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\model\GuiHelper.java">
+<file name="C:\Users\jb00645\Desktop\DevOpsSprint 2 date 4-25-25\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\model\AccountManager.java">
 </file>
-<file name="C:\Users\jb00645\Desktop\temp Dev Folder\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\model\Views.java">
+<file name="C:\Users\jb00645\Desktop\DevOpsSprint 2 date 4-25-25\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\model\Session.java">
 </file>
-<file name="C:\Users\jb00645\Desktop\temp Dev Folder\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\view\codebehind\AccountPortfolioPageView.java">
+<file name="C:\Users\jb00645\Desktop\DevOpsSprint 2 date 4-25-25\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\model\User.java">
 </file>
-<file name="C:\Users\jb00645\Desktop\temp Dev Folder\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\view\codebehind\CreateAccountPageView.java">
+<file name="C:\Users\jb00645\Desktop\DevOpsSprint 2 date 4-25-25\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\view\codebehind\AccountPortfolioPageView.java">
 </file>
-<file name="C:\Users\jb00645\Desktop\temp Dev Folder\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\view\codebehind\HomePageView.java">
+<file name="C:\Users\jb00645\Desktop\DevOpsSprint 2 date 4-25-25\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\view\codebehind\CreateAccountPageView.java">
 </file>
-<file name="C:\Users\jb00645\Desktop\temp Dev Folder\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\view\codebehind\LoginPageView.java">
+<file name="C:\Users\jb00645\Desktop\DevOpsSprint 2 date 4-25-25\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\view\codebehind\GuiHelper.java">
 </file>
-<file name="C:\Users\jb00645\Desktop\temp Dev Folder\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\view\codebehind\ProjectPageView.java">
+<file name="C:\Users\jb00645\Desktop\DevOpsSprint 2 date 4-25-25\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\view\codebehind\HomePageView.java">
+</file>
+<file name="C:\Users\jb00645\Desktop\DevOpsSprint 2 date 4-25-25\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\view\codebehind\LoginPageView.java">
+</file>
+<file name="C:\Users\jb00645\Desktop\DevOpsSprint 2 date 4-25-25\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\view\codebehind\ProjectPageView.java">
+</file>
+<file name="C:\Users\jb00645\Desktop\DevOpsSprint 2 date 4-25-25\DevOps_Project_Portfolio_Hub_Project\code\Project_Portfolio\Project_Portfolio\src\main\java\edu\westga\comp4420\project_portfolio\view\codebehind\Views.java">
 </file>
 </checkstyle>

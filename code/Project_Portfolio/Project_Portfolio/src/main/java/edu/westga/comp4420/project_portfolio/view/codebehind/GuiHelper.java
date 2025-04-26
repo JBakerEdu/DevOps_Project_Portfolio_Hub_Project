@@ -1,4 +1,4 @@
-package edu.westga.comp4420.project_portfolio.model;
+package edu.westga.comp4420.project_portfolio.view.codebehind;
 
 import java.io.IOException;
 

@@ -1,7 +1,6 @@
 package edu.westga.comp4420.project_portfolio.view.codebehind;
 
-import edu.westga.comp4420.project_portfolio.model.GuiHelper;
-import edu.westga.comp4420.project_portfolio.model.Views;
+import edu.westga.comp4420.project_portfolio.model.Session;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,6 +38,9 @@ public class AccountPortfolioPageView {
 
     @FXML
     private Button edit;
+	
+	@FXML
+    private Button logout;
 
     @FXML
     private Button lastProjectsButton;
@@ -113,6 +115,12 @@ public class AccountPortfolioPageView {
     @FXML
     void handleEditButtonClick(ActionEvent event) {
 
+    }
+	
+	@FXML
+    void handleLogoutButtonClick(ActionEvent event) {
+		Session.getInstance().logout();
+		GuiHelper.switchView(this.anchorPane, Views.HOMEPAGE);
     }
 
     @FXML
