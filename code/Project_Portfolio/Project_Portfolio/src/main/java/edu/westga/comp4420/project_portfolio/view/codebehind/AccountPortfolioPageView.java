@@ -343,7 +343,6 @@ public class AccountPortfolioPageView {
 	}
 
 	private void updateProjectDisplay() {
-    // First clear everything
 		this.projectEdit1.clear();
 		this.projectEdit2.clear();
 		this.projectEdit3.clear();
@@ -359,19 +358,19 @@ public class AccountPortfolioPageView {
 
 		if (startIndex < this.currentProjects.size()) {
 			this.projectPane1.setVisible(true);
-			this.projectEdit1.setText(this.currentProjects.get(startIndex).getName());
+			this.projectEdit1.setText(this.currentProjects.get(startIndex).getFormattedLastEdited());
 			this.projectDescription1.setText(this.currentProjects.get(startIndex).getDescription());
 		}
 
 		if (startIndex + 1 < this.currentProjects.size()) {
 			this.projectPane2.setVisible(true);
-			this.projectEdit2.setText(this.currentProjects.get(startIndex + 1).getName());
+			this.projectEdit2.setText(this.currentProjects.get(startIndex + 1).getFormattedLastEdited());
 			this.projectDescription2.setText(this.currentProjects.get(startIndex + 1).getDescription());
 		}
 
 		if (startIndex + 2 < this.currentProjects.size()) {
 			this.projectPane3.setVisible(true);
-			this.projectEdit3.setText(this.currentProjects.get(startIndex + 2).getName());
+			this.projectEdit3.setText(this.currentProjects.get(startIndex + 2).getFormattedLastEdited());
 			this.projectDescription3.setText(this.currentProjects.get(startIndex + 2).getDescription());
 		}
 
@@ -384,7 +383,4 @@ public class AccountPortfolioPageView {
 		this.lastProjectsButton.setDisable(this.currentPage == 0);
 		this.nextProjectsButton.setDisable(this.currentPage >= totalPages - 1);
 	}
-
-
-
 }

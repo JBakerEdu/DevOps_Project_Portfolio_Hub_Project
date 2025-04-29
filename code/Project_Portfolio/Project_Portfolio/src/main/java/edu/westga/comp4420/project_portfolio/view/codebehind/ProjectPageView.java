@@ -163,8 +163,8 @@ public class ProjectPageView {
 		}
 
 		this.updateProjectData();
-		this.handleSaveVisiblity();
 		this.updateProjectDisplay();
+		this.handleSaveVisiblity();
 		this.showAlert("Success", "Project updated successfully!");
 
 		this.currentProject = null;
@@ -377,12 +377,13 @@ public class ProjectPageView {
 			this.projectTitleLabel.setText(selectedProject.getName());
 			this.projectNameTextField.setText(selectedProject.getName());
 			this.descriptionTextArea.setText(selectedProject.getDescription());
+			//this.hyperLinkTextField.clear();
+			this.hyperLinkTextField.setText(selectedProject.getHyperlink());
 			if (selectedProject.getHyperlink() != null && !selectedProject.getHyperlink().isBlank()) {
 				this.projectHyperlink.setText(selectedProject.getHyperlink());
 			} else {
 				this.projectHyperlink.setText("No link provided");
 			}
-			this.hyperLinkTextField.clear();
 
 			if (selectedProject.getLastEdited() != null) {
 				this.lastEditedLabel.setText("Last Edited: " + selectedProject.getFormattedLastEdited());
