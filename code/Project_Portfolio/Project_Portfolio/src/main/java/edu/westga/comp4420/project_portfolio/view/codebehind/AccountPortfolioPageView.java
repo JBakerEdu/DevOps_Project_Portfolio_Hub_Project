@@ -196,8 +196,8 @@ public class AccountPortfolioPageView {
 	
 	@FXML
     void handleSaveButtonClick(ActionEvent event) {
-		this.switichEditMode(false);
 		Session.getInstance().getCurrentUser().setDescription(this.userDescription.getText());
+		this.switichEditMode(false);
 		
     }
 	
@@ -321,6 +321,7 @@ public class AccountPortfolioPageView {
 			if (AccountContext.getInstance().hasUserToView()) {
 				User viewed = AccountContext.getInstance().getUserToView();
 				this.userName.setText(viewed.getUsername());
+				this.userDescription.setText(viewed.getDescription());
 				this.loadUserProjects(viewed);
 			} else {
 				this.userName.setText("Error: Select Another User");

@@ -349,8 +349,8 @@ public class ProjectPageView {
 		this.projectNameTextField.setVisible(false);
 		this.projectTitleLabel.setVisible(true);
 		this.editButton.setVisible(true);
-		this.lastEditedLabel.setText("Last Edited: Not yet saved");
-		this.projectHyperlink.setText("No link provided");
+		//this.lastEditedLabel.setText("Last Edited: Not yet saved");
+		//this.projectHyperlink.setText("No link provided");
 		
 		this.bindPropertiesAndListners();
 	}
@@ -377,18 +377,13 @@ public class ProjectPageView {
 			this.projectTitleLabel.setText(selectedProject.getName());
 			this.projectNameTextField.setText(selectedProject.getName());
 			this.descriptionTextArea.setText(selectedProject.getDescription());
-			//this.hyperLinkTextField.clear();
+			this.lastEditedLabel.setText("Last Edited: " + selectedProject.getFormattedLastEdited());
 			this.hyperLinkTextField.setText(selectedProject.getHyperlink());
-			if (selectedProject.getHyperlink() != null && !selectedProject.getHyperlink().isBlank()) {
-				this.projectHyperlink.setText(selectedProject.getHyperlink());
+			String projectLink = this.hyperLinkTextField.getText();
+			if (projectLink != null && !projectLink.isEmpty()) {
+				this.projectHyperlink.setText(projectLink);
 			} else {
 				this.projectHyperlink.setText("No link provided");
-			}
-
-			if (selectedProject.getLastEdited() != null) {
-				this.lastEditedLabel.setText("Last Edited: " + selectedProject.getFormattedLastEdited());
-			} else {
-				this.lastEditedLabel.setText("Last Edited: Unknown");
 			}
 			if (selectedProject.getRootDirectory() != null) {
 				this.initialDirectory = selectedProject.getRootDirectory();
@@ -398,6 +393,7 @@ public class ProjectPageView {
 				this.folderListView.getItems().clear();
 				this.folderListView.getItems().add("No uploaded files for this project.");
 			}
+			this.hyperLinkTextField.clear();
 		} else {
 			this.showAlert("Error", "No project selected to view.");
 			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
