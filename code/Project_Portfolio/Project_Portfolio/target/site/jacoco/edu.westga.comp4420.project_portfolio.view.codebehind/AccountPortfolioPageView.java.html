@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccountPortfolioPageView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-Portfolio-Project</a> &gt; <a href="index.source.html" class="el_package">edu.westga.comp4420.project_portfolio.view.codebehind</a> &gt; <span class="el_source">AccountPortfolioPageView.java</span></div><h1>AccountPortfolioPageView.java</h1><pre class="source lang-java linenums">package edu.westga.comp4420.project_portfolio.view.codebehind;
+
+import edu.westga.comp4420.project_portfolio.model.Session;
+import edu.westga.comp4420.project_portfolio.model.User;
+import edu.westga.comp4420.project_portfolio.model.AccountContext;
+import edu.westga.comp4420.project_portfolio.model.Project;
+import edu.westga.comp4420.project_portfolio.model.ProjectContext;
+
+import java.util.List;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+
+/**
+ * CodeBehind To Handle Processing for the Accounts Portfolio Page
+ *
+ * @author	Jacob Baker
+ * @version Spring 2025
+ */
+<span class="nc" id="L28">public class AccountPortfolioPageView {</span>
+	private List&lt;Project&gt; currentProjects;
+	private int currentPage;
+<span class="nc" id="L31">	private final int projectsPerPage = 3;</span>
+	
+	@FXML
+    private AnchorPane anchorPane;
+	
+	@FXML
+    private Label accountHeader;
+
+    @FXML
+    private Button addProjectsButton;
+	
+	@FXML
+    private Button save;
+
+    @FXML
+    private Button delete1;
+
+    @FXML
+    private Button delete2;
+
+    @FXML
+    private Button delete3;
+
+    @FXML
+    private Button edit;
+	
+	@FXML
+    private Button cancel;
+	
+	@FXML
+    private Button logout;
+
+    @FXML
+    private Button lastProjectsButton;
+
+    @FXML
+    private Button nextProjectsButton;
+
+    @FXML
+    private ImageView profileImage;
+
+    @FXML
+    private ImageView profilePicture;
+	
+	@FXML
+    private TextArea userDescription;
+
+    @FXML
+    private TextArea projectDescription1;
+
+    @FXML
+    private TextArea projectDescription2;
+
+    @FXML
+    private TextArea projectDescription3;
+
+    @FXML
+    private TextField projectEdit1;
+
+    @FXML
+    private TextField projectEdit2;
+
+    @FXML
+    private TextField projectEdit3;
+
+    @FXML
+    private ImageView projectImage1;
+
+    @FXML
+    private ImageView projectImage2;
+
+    @FXML
+    private ImageView projectImage3;
+
+    @FXML
+    private Pane projectPane1;
+
+    @FXML
+    private Pane projectPane2;
+
+    @FXML
+    private Pane projectPane3;
+
+    @FXML
+    private Button projectView1;
+
+    @FXML
+    private Button projectView2;
+
+    @FXML
+    private Button projectView3;
+
+    @FXML
+    private Label userName;
+
+    @FXML
+    void handleAddProjectButtonClick(ActionEvent event) {
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		if (Session.getInstance().getCurrentUser() == null) {</span>
+<span class="nc" id="L129">			GuiHelper.switchView(this.anchorPane, Views.LOGIN);</span>
+<span class="nc" id="L130">			return;</span>
+		}
+
+<span class="nc" id="L133">		String defaultName = &quot;New Project&quot;;</span>
+<span class="nc" id="L134">		String defaultDescription = &quot;Project Description Here&quot;;</span>
+<span class="nc" id="L135">		String defaultLink = &quot;&quot;;</span>
+
+<span class="nc" id="L137">		Session.getInstance().getCurrentUser().getProjectManager().addProject(defaultName, defaultDescription, defaultLink, null);</span>
+
+<span class="nc" id="L139">		this.loadUserProjects(Session.getInstance().getCurrentUser());</span>
+<span class="nc" id="L140">    }</span>
+
+    @FXML
+    void handleDeleteProjectsButtonClick(ActionEvent event) {
+<span class="nc" id="L144">		Object source = event.getSource();</span>
+
+<span class="nc" id="L146">		int indexOffset = 0;</span>
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">		if (source == this.delete1) {</span>
+<span class="nc" id="L149">			indexOffset = 0;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		} else if (source == this.delete2) {</span>
+<span class="nc" id="L151">			indexOffset = 1;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">		} else if (source == this.delete3) {</span>
+<span class="nc" id="L153">			indexOffset = 2;</span>
+		} else {
+<span class="nc" id="L155">			return;</span>
+		}
+
+<span class="nc" id="L158">		int projectIndex = (this.currentPage * this.projectsPerPage) + indexOffset;</span>
+
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		if (projectIndex &lt; this.currentProjects.size()) {</span>
+<span class="nc" id="L161">			boolean confirmed = this.confirmDeletion();</span>
+
+<span class="nc bnc" id="L163" title="All 2 branches missed.">			if (confirmed) {</span>
+<span class="nc" id="L164">				Project projectToDelete = this.currentProjects.get(projectIndex);</span>
+<span class="nc" id="L165">				Session.getInstance().getCurrentUser().getProjectManager().removeProject(projectToDelete);</span>
+
+<span class="nc" id="L167">				this.loadUserProjects(Session.getInstance().getCurrentUser());</span>
+<span class="nc" id="L168">				this.showAlert(&quot;Deleted&quot;, &quot;The project has been deleted successfully.&quot;);</span>
+			}
+		}
+<span class="nc" id="L171">    }</span>
+	
+	private void showAlert(String title, String message) {
+<span class="nc" id="L174">		javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);</span>
+<span class="nc" id="L175">		alert.setTitle(title);</span>
+<span class="nc" id="L176">		alert.setHeaderText(null);</span>
+<span class="nc" id="L177">		alert.setContentText(message);</span>
+<span class="nc" id="L178">		alert.showAndWait();</span>
+<span class="nc" id="L179">	}</span>
+
+	
+	private boolean confirmDeletion() {
+<span class="nc" id="L183">		javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);</span>
+<span class="nc" id="L184">		alert.setTitle(&quot;Confirm Deletion&quot;);</span>
+<span class="nc" id="L185">		alert.setHeaderText(&quot;Are you sure you want to delete this project?&quot;);</span>
+<span class="nc" id="L186">		alert.setContentText(&quot;This action cannot be undone.&quot;);</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		return alert.showAndWait().filter(response -&gt; response == javafx.scene.control.ButtonType.OK).isPresent();</span>
+	}
+
+
+    @FXML
+    void handleEditButtonClick(ActionEvent event) {
+<span class="nc" id="L193">		this.switichEditMode(true);</span>
+		
+<span class="nc" id="L195">    }</span>
+	
+	@FXML
+    void handleSaveButtonClick(ActionEvent event) {
+<span class="nc" id="L199">		Session.getInstance().getCurrentUser().setDescription(this.userDescription.getText());</span>
+<span class="nc" id="L200">		this.switichEditMode(false);</span>
+		
+<span class="nc" id="L202">    }</span>
+	
+	@FXML
+    void handleCancelButtonClick(ActionEvent event) {
+<span class="nc" id="L206">		this.userDescription.setText(Session.getInstance().getCurrentUser().getDescription());</span>
+<span class="nc" id="L207">		this.switichEditMode(false);</span>
+<span class="nc" id="L208">    }</span>
+	
+	private void switichEditMode(boolean isEditing) {
+<span class="nc bnc" id="L211" title="All 2 branches missed.">		this.edit.setVisible(!isEditing);</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		this.logout.setVisible(!isEditing);</span>
+<span class="nc" id="L213">		this.save.setVisible(isEditing);</span>
+<span class="nc" id="L214">		this.cancel.setVisible(isEditing);</span>
+<span class="nc" id="L215">		this.userDescription.setEditable(isEditing);</span>
+<span class="nc" id="L216">	}</span>
+	
+	@FXML
+    void handleLogoutButtonClick(ActionEvent event) {
+<span class="nc" id="L220">		Session.getInstance().logout();</span>
+<span class="nc" id="L221">		GuiHelper.switchView(this.anchorPane, Views.HOMEPAGE);</span>
+<span class="nc" id="L222">    }</span>
+
+    @FXML
+    void handleHomeClick(MouseEvent event) {
+<span class="nc" id="L226">		GuiHelper.switchView(this.anchorPane, Views.HOMEPAGE);</span>
+<span class="nc" id="L227">    }</span>
+
+    @FXML
+    void handleLastProejctsButtonClick(ActionEvent event) {
+<span class="nc bnc" id="L231" title="All 2 branches missed.">		if (this.currentPage &gt; 0) {</span>
+<span class="nc" id="L232">			this.currentPage--;</span>
+<span class="nc" id="L233">			this.updateProjectDisplay();</span>
+		}
+<span class="nc" id="L235">    }</span>
+
+    @FXML
+    void handleNextProjectsButtonClick(ActionEvent event) {
+<span class="nc" id="L239">		int totalPages = (int) Math.ceil((double) this.currentProjects.size() / this.projectsPerPage);</span>
+
+<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (this.currentPage &lt; totalPages - 1) {</span>
+<span class="nc" id="L242">			this.currentPage++;</span>
+<span class="nc" id="L243">			this.updateProjectDisplay();</span>
+		}
+<span class="nc" id="L245">    }</span>
+
+    @FXML
+    void handlePersonalAccountClick(MouseEvent event) {
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		if (Session.getInstance().getCurrentUser() != null) {</span>
+<span class="nc" id="L250">			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);</span>
+		} else {
+<span class="nc" id="L252">			GuiHelper.switchView(this.anchorPane, Views.LOGIN);</span>
+		}
+<span class="nc" id="L254">    }</span>
+
+    @FXML
+    void handleSearchBar(ActionEvent event) {
+		// Not implemented yet
+<span class="nc" id="L259">    }</span>
+
+    @FXML
+    void handleSearchButtoneClick(MouseEvent event) {
+		// Not implemented yet
+<span class="nc" id="L264">    }</span>
+
+    @FXML
+    void handleViewButtonClick(ActionEvent event) {
+<span class="nc" id="L268">		Object source = event.getSource();</span>
+
+<span class="nc" id="L270">		int indexOffset = 0;</span>
+
+<span class="nc bnc" id="L272" title="All 2 branches missed.">		if (source == this.projectView1) {</span>
+<span class="nc" id="L273">			indexOffset = 0;</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">		} else if (source == this.projectView2) {</span>
+<span class="nc" id="L275">			indexOffset = 1;</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		} else if (source == this.projectView3) {</span>
+<span class="nc" id="L277">			indexOffset = 2;</span>
+		} else {
+<span class="nc" id="L279">			return;</span>
+		}
+
+<span class="nc" id="L282">		int projectIndex = (this.currentPage * this.projectsPerPage) + indexOffset;</span>
+
+<span class="nc bnc" id="L284" title="All 2 branches missed.">		if (projectIndex &lt; this.currentProjects.size()) {</span>
+<span class="nc" id="L285">			Project selectedProject = this.currentProjects.get(projectIndex);</span>
+<span class="nc" id="L286">			ProjectContext.getInstance().setSelectedProject(selectedProject);</span>
+<span class="nc" id="L287">			GuiHelper.switchView(this.anchorPane, Views.PROJECTS);</span>
+		}
+<span class="nc" id="L289">    }</span>
+	
+	/**
+	* this returns the anchor pane that will be changed 
+	*
+	* @return anchorPane that is in use to help change views
+	*/
+	public AnchorPane getAnchorPane() {
+<span class="nc" id="L297">		return this.anchorPane;</span>
+	}
+
+	/**
+	*this sets the anchorPane that will be used as the view
+	*
+	* @param tempAnchorPane which it the anchor pane being set to
+	*/
+	public void setAnchorPane(AnchorPane tempAnchorPane) {
+<span class="nc" id="L306">		this.anchorPane = tempAnchorPane;</span>
+		
+<span class="nc" id="L308">	}</span>
+	
+	@FXML
+	void initialize() {
+<span class="nc" id="L312">		this.currentPage = 0;</span>
+<span class="nc" id="L313">		this.initUserNames();</span>
+<span class="nc" id="L314">	}</span>
+
+	private void initUserNames() {
+<span class="nc bnc" id="L317" title="All 2 branches missed.">		if (Session.getInstance().getCurrentUser() != null) {</span>
+<span class="nc" id="L318">			String username = Session.getInstance().getCurrentUser().getUsername();</span>
+<span class="nc" id="L319">			this.accountHeader.setText(username);</span>
+
+<span class="nc bnc" id="L321" title="All 2 branches missed.">			if (AccountContext.getInstance().hasUserToView()) {</span>
+<span class="nc" id="L322">				User viewed = AccountContext.getInstance().getUserToView();</span>
+<span class="nc" id="L323">				this.userName.setText(viewed.getUsername());</span>
+<span class="nc" id="L324">				this.userDescription.setText(viewed.getDescription());</span>
+<span class="nc" id="L325">				this.loadUserProjects(viewed);</span>
+<span class="nc" id="L326">			} else {</span>
+<span class="nc" id="L327">				this.userName.setText(&quot;Error: Select Another User&quot;);</span>
+			}
+<span class="nc" id="L329">		} else {</span>
+<span class="nc" id="L330">			GuiHelper.switchView(this.anchorPane, Views.LOGIN);</span>
+<span class="nc" id="L331">			this.accountHeader.setText(&quot;Account&quot;);</span>
+		}
+<span class="nc" id="L333">	}</span>
+
+	/**
+	* Loads the user's projects into the account page.
+	*
+	* @param user the user whose projects to display
+	*/
+	private void loadUserProjects(User user) {
+<span class="nc" id="L341">		this.currentProjects = user.getProjectManager().getProjects();</span>
+<span class="nc" id="L342">		this.currentPage = 0;</span>
+<span class="nc" id="L343">		this.updateProjectDisplay();</span>
+<span class="nc" id="L344">	}</span>
+
+	private void updateProjectDisplay() {
+<span class="nc" id="L347">		this.projectEdit1.clear();</span>
+<span class="nc" id="L348">		this.projectEdit2.clear();</span>
+<span class="nc" id="L349">		this.projectEdit3.clear();</span>
+<span class="nc" id="L350">		this.projectDescription1.clear();</span>
+<span class="nc" id="L351">		this.projectDescription2.clear();</span>
+<span class="nc" id="L352">		this.projectDescription3.clear();</span>
+
+<span class="nc" id="L354">		this.projectPane1.setVisible(false);</span>
+<span class="nc" id="L355">		this.projectPane2.setVisible(false);</span>
+<span class="nc" id="L356">		this.projectPane3.setVisible(false);</span>
+
+<span class="nc" id="L358">		int startIndex = this.currentPage * this.projectsPerPage;</span>
+
+<span class="nc bnc" id="L360" title="All 2 branches missed.">		if (startIndex &lt; this.currentProjects.size()) {</span>
+<span class="nc" id="L361">			this.projectPane1.setVisible(true);</span>
+<span class="nc" id="L362">			this.projectEdit1.setText(this.currentProjects.get(startIndex).getFormattedLastEdited());</span>
+<span class="nc" id="L363">			this.projectDescription1.setText(this.currentProjects.get(startIndex).getDescription());</span>
+		}
+
+<span class="nc bnc" id="L366" title="All 2 branches missed.">		if (startIndex + 1 &lt; this.currentProjects.size()) {</span>
+<span class="nc" id="L367">			this.projectPane2.setVisible(true);</span>
+<span class="nc" id="L368">			this.projectEdit2.setText(this.currentProjects.get(startIndex + 1).getFormattedLastEdited());</span>
+<span class="nc" id="L369">			this.projectDescription2.setText(this.currentProjects.get(startIndex + 1).getDescription());</span>
+		}
+
+<span class="nc bnc" id="L372" title="All 2 branches missed.">		if (startIndex + 2 &lt; this.currentProjects.size()) {</span>
+<span class="nc" id="L373">			this.projectPane3.setVisible(true);</span>
+<span class="nc" id="L374">			this.projectEdit3.setText(this.currentProjects.get(startIndex + 2).getFormattedLastEdited());</span>
+<span class="nc" id="L375">			this.projectDescription3.setText(this.currentProjects.get(startIndex + 2).getDescription());</span>
+		}
+
+<span class="nc" id="L378">		this.updateNavigationButtons();</span>
+<span class="nc" id="L379">	}</span>
+	
+	private void updateNavigationButtons() {
+<span class="nc" id="L382">		int totalPages = (int) Math.ceil((double) this.currentProjects.size() / this.projectsPerPage);</span>
+
+<span class="nc bnc" id="L384" title="All 2 branches missed.">		this.lastProjectsButton.setDisable(this.currentPage == 0);</span>
+<span class="nc bnc" id="L385" title="All 2 branches missed.">		this.nextProjectsButton.setDisable(this.currentPage &gt;= totalPages - 1);</span>
+<span class="nc" id="L386">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

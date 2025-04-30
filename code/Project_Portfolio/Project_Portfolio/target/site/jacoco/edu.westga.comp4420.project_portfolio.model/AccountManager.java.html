@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccountManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-Portfolio-Project</a> &gt; <a href="index.source.html" class="el_package">edu.westga.comp4420.project_portfolio.model</a> &gt; <span class="el_source">AccountManager.java</span></div><h1>AccountManager.java</h1><pre class="source lang-java linenums">package edu.westga.comp4420.project_portfolio.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="nc" id="L6">public class AccountManager {</span>
+<span class="fc" id="L7">    private static List&lt;User&gt; accounts = new ArrayList&lt;&gt;();</span>
+
+    public static boolean createAccount(String username, String password, String email) {
+<span class="fc bfc" id="L10" title="All 2 branches covered.">        if (findUserByUsernameOrEmail(username) != null) {</span>
+<span class="fc" id="L11">            return false;</span>
+        }
+<span class="fc bfc" id="L13" title="All 2 branches covered.">		if (findUserByUsernameOrEmail(email) != null) {</span>
+<span class="fc" id="L14">            return false;</span>
+        }
+<span class="fc" id="L16">        accounts.add(new User(username, password, email));</span>
+<span class="fc" id="L17">        return true;</span>
+    }
+
+    public static User validateLogin(String username, String password) {
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        for (User user : accounts) {</span>
+<span class="pc bpc" id="L22" title="1 of 4 branches missed.">            if (user.getUsername().equals(username) &amp;&amp; user.getPassword().equals(password)) {</span>
+<span class="fc" id="L23">                return user;</span>
+            }
+<span class="fc" id="L25">        }</span>
+<span class="fc" id="L26">        return null;</span>
+    }
+	
+	public static User findUserByUsernameOrEmail(String input) {
+<span class="fc bfc" id="L30" title="All 2 branches covered.">		for (User user : accounts) {</span>
+<span class="fc bfc" id="L31" title="All 4 branches covered.">			if (user.getUsername().equals(input) || user.getEmail().equals(input)) {</span>
+<span class="fc" id="L32">				return user;</span>
+			}
+<span class="fc" id="L34">		}</span>
+<span class="fc" id="L35">		return null;</span>
+	}
+	
+	public static User findUserByUsername(String username) {
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">		for (User user : accounts) {</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">			if (user.getUsername().equals(username)) {</span>
+<span class="fc" id="L41">				return user;</span>
+			}
+<span class="nc" id="L43">		}</span>
+<span class="nc" id="L44">		return null;</span>
+	}
+
+	public static User findUserByEmail(String email) {
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">		for (User user : accounts) {</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">			if (user.getEmail().equals(email)) {</span>
+<span class="fc" id="L50">				return user;</span>
+			}
+<span class="nc" id="L52">		}</span>
+<span class="nc" id="L53">		return null;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

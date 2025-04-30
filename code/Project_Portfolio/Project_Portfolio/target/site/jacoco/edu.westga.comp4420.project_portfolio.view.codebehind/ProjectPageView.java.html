@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectPageView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-Portfolio-Project</a> &gt; <a href="index.source.html" class="el_package">edu.westga.comp4420.project_portfolio.view.codebehind</a> &gt; <span class="el_source">ProjectPageView.java</span></div><h1>ProjectPageView.java</h1><pre class="source lang-java linenums">package edu.westga.comp4420.project_portfolio.view.codebehind;
+
+import edu.westga.comp4420.project_portfolio.model.Session;
+import edu.westga.comp4420.project_portfolio.model.User;
+import edu.westga.comp4420.project_portfolio.model.AccountContext;
+import edu.westga.comp4420.project_portfolio.model.Project;
+import edu.westga.comp4420.project_portfolio.model.ProjectContext;
+
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+
+import javafx.stage.Stage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.List;
+import javafx.stage.DirectoryChooser;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
+/**
+ * CodeBehind To Handle Processing for the Project Page
+ *
+ * @author	Jacob Baker
+ * @version Spring 2025
+ */
+<span class="nc" id="L42">public class ProjectPageView {</span>
+	
+	private File currentDirectory;
+	private File initialDirectory;
+	private String selectedItem;
+	private Project currentProject;
+	
+	@FXML
+    private AnchorPane anchorPane;
+	
+	@FXML
+    private Label accountHeader;
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private TextArea codeTextArea;
+
+    @FXML
+    private ScrollPane codeTextAreaPane;
+
+    @FXML
+    private Button editButton;
+
+    @FXML
+    private ListView&lt;String&gt; folderListView;
+
+    @FXML
+    private ImageView profileImage;
+
+    @FXML
+    private ImageView profilePicture;
+	
+	@FXML
+    private TextArea descriptionTextArea;
+
+    @FXML
+    private Hyperlink projectHyperlink;
+	
+	@FXML
+    private Button saveButton;
+
+    @FXML
+    private Button uploadButton;
+
+    @FXML
+    private Label userName;
+	
+	@FXML
+    private TextField projectNameTextField;
+
+    @FXML
+    private Label projectTitleLabel;
+	
+	@FXML
+    private Label lastEditedLabel;
+	
+	@FXML
+    private TextField hyperLinkTextField;
+
+
+    @FXML
+	void handleBackButtonClick(ActionEvent event) {
+<span class="nc bnc" id="L106" title="All 4 branches missed.">		if (this.initialDirectory == null || this.currentDirectory == null) {</span>
+<span class="nc" id="L107">			this.showAlert(&quot;Info&quot;, &quot;No file uploaded.&quot;);</span>
+<span class="nc" id="L108">			return;</span>
+		}
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (this.codeTextAreaPane.isVisible()) {</span>
+<span class="nc" id="L111">			this.codeTextAreaPane.setVisible(false);</span>
+<span class="nc" id="L112">			this.folderListView.setVisible(true);</span>
+<span class="nc" id="L113">			return;</span>
+		}
+<span class="nc bnc" id="L115" title="All 4 branches missed.">		if (this.currentDirectory != null &amp;&amp; this.currentDirectory.getParentFile() != null) {</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">			if (!this.currentDirectory.equals(this.initialDirectory)) {</span>
+<span class="nc" id="L117">				this.currentDirectory = this.currentDirectory.getParentFile();</span>
+<span class="nc" id="L118">				this.updateFolderList(this.currentDirectory);</span>
+			} else {
+<span class="nc" id="L120">				this.showAlert(&quot;Info&quot;, &quot;You are at the initial directory and cannot go back further.&quot;);</span>
+			}
+		}
+<span class="nc" id="L123">	}</span>
+
+    @FXML
+    void handleEditButtonClick(ActionEvent event) {
+<span class="nc" id="L127">		String selectedProjectName = this.projectTitleLabel.getText();</span>
+<span class="nc" id="L128">		this.currentProject = Session.getInstance().getCurrentUser().getProjectManager().getProjectByName(selectedProjectName);</span>
+	
+<span class="nc" id="L130">		this.codeTextAreaPane.setVisible(false);</span>
+<span class="nc" id="L131">		this.folderListView.setVisible(true);</span>
+<span class="nc" id="L132">		this.uploadButton.setVisible(true);</span>
+<span class="nc" id="L133">		this.saveButton.setVisible(true);</span>
+<span class="nc" id="L134">		this.projectNameTextField.setVisible(true);</span>
+<span class="nc" id="L135">		this.projectTitleLabel.setVisible(false);</span>
+<span class="nc" id="L136">		this.editButton.setVisible(false);</span>
+<span class="nc" id="L137">		this.descriptionTextArea.setEditable(true);</span>
+<span class="nc" id="L138">		this.projectHyperlink.setVisible(false);</span>
+<span class="nc" id="L139">		this.hyperLinkTextField.setEditable(true);</span>
+		
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (this.currentProject.getHyperlink() != null) {</span>
+<span class="nc" id="L142">			this.hyperLinkTextField.setText(this.currentProject.getHyperlink());</span>
+		} else {
+<span class="nc" id="L144">			this.hyperLinkTextField.clear();</span>
+		}
+<span class="nc" id="L146">    }</span>
+	
+	@FXML
+	void handleSaveButtonClick(ActionEvent event) {
+<span class="nc bnc" id="L150" title="All 2 branches missed.">		if (Session.getInstance().getCurrentUser() == null) {</span>
+<span class="nc" id="L151">			this.showAlert(&quot;Error&quot;, &quot;You must be logged in to save a project.&quot;);</span>
+<span class="nc" id="L152">			GuiHelper.switchView(this.anchorPane, Views.LOGIN);</span>
+<span class="nc" id="L153">			return;</span>
+		}
+
+<span class="nc bnc" id="L156" title="All 2 branches missed.">		if (this.currentProject == null) {</span>
+<span class="nc" id="L157">			this.showAlert(&quot;Error&quot;, &quot;No project selected to save.&quot;);</span>
+<span class="nc" id="L158">			return;</span>
+		}
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">		if (!this.validateSaveInputs()) {</span>
+<span class="nc" id="L162">			return;</span>
+		}
+
+<span class="nc" id="L165">		this.updateProjectData();</span>
+<span class="nc" id="L166">		this.updateProjectDisplay();</span>
+<span class="nc" id="L167">		this.handleSaveVisiblity();</span>
+<span class="nc" id="L168">		this.showAlert(&quot;Success&quot;, &quot;Project updated successfully!&quot;);</span>
+
+<span class="nc" id="L170">		this.currentProject = null;</span>
+<span class="nc" id="L171">	}</span>
+
+	
+	private boolean validateSaveInputs() {
+<span class="nc" id="L175">		String projectName = this.projectNameTextField.getText();</span>
+
+<span class="nc bnc" id="L177" title="All 4 branches missed.">		if (projectName == null || projectName.isBlank()) {</span>
+<span class="nc" id="L178">			this.showAlert(&quot;Error&quot;, &quot;Project must have a name.&quot;);</span>
+<span class="nc" id="L179">			return false;</span>
+		}
+
+<span class="nc" id="L182">		return true;</span>
+	}
+
+	
+	private void updateProjectData() {
+<span class="nc" id="L187">		String projectName = this.projectNameTextField.getText();</span>
+<span class="nc" id="L188">		String projectDescription = this.descriptionTextArea.getText();</span>
+<span class="nc" id="L189">		String projectLink = this.hyperLinkTextField.getText();</span>
+<span class="nc" id="L190">		File rootDirectory = this.initialDirectory;</span>
+
+<span class="nc" id="L192">		this.currentProject.setName(projectName);</span>
+<span class="nc" id="L193">		this.currentProject.setDescription(projectDescription);</span>
+<span class="nc" id="L194">		this.currentProject.setHyperlink(projectLink);</span>
+    
+<span class="nc bnc" id="L196" title="All 2 branches missed.">		if (rootDirectory != null) {</span>
+<span class="nc" id="L197">			this.currentProject.setRootDirectory(rootDirectory);</span>
+		}
+<span class="nc" id="L199">	}</span>
+
+	private void updateProjectDisplay() {
+<span class="nc" id="L202">		String projectName = this.projectNameTextField.getText();</span>
+<span class="nc" id="L203">		String projectLink = this.hyperLinkTextField.getText();</span>
+
+<span class="nc" id="L205">		LocalDateTime currentDateTime = LocalDateTime.now();</span>
+<span class="nc" id="L206">		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+<span class="nc" id="L207">		String formattedDate = currentDateTime.format(formatter);</span>
+
+<span class="nc" id="L209">		this.lastEditedLabel.setText(&quot;Last Edited: &quot; + formattedDate);</span>
+<span class="nc" id="L210">		this.projectTitleLabel.setText(projectName);</span>
+
+<span class="nc bnc" id="L212" title="All 4 branches missed.">		if (projectLink != null &amp;&amp; !projectLink.trim().isEmpty()) {</span>
+<span class="nc" id="L213">			this.projectHyperlink.setText(projectLink);</span>
+		} else {
+<span class="nc" id="L215">			this.projectHyperlink.setText(&quot;No link provided&quot;);</span>
+		}
+<span class="nc" id="L217">	}</span>
+	
+	private void handleSaveVisiblity() {
+<span class="nc" id="L220">		this.codeTextAreaPane.setVisible(false);</span>
+<span class="nc" id="L221">		this.folderListView.setVisible(true);</span>
+<span class="nc" id="L222">		this.uploadButton.setVisible(false);</span>
+<span class="nc" id="L223">		this.saveButton.setVisible(false);</span>
+<span class="nc" id="L224">		this.projectNameTextField.setVisible(false);</span>
+<span class="nc" id="L225">		this.projectTitleLabel.setVisible(true);</span>
+<span class="nc" id="L226">		this.editButton.setVisible(true);</span>
+<span class="nc" id="L227">		this.descriptionTextArea.setEditable(false);</span>
+<span class="nc" id="L228">		this.projectHyperlink.setVisible(true);</span>
+<span class="nc" id="L229">		this.hyperLinkTextField.setEditable(false);</span>
+<span class="nc" id="L230">		this.hyperLinkTextField.clear();</span>
+<span class="nc" id="L231">	}</span>
+
+
+    @FXML
+    void handleHomeClick(MouseEvent event) {
+<span class="nc" id="L236">		GuiHelper.switchView(this.anchorPane, Views.HOMEPAGE);</span>
+<span class="nc" id="L237">    }</span>
+
+    @FXML
+    void handlePersonalAccountClick(MouseEvent event) {
+<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (Session.getInstance().getCurrentUser() != null) {</span>
+<span class="nc" id="L242">			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);</span>
+		} else {
+<span class="nc" id="L244">			GuiHelper.switchView(this.anchorPane, Views.LOGIN);</span>
+		}
+<span class="nc" id="L246">    }</span>
+
+    @FXML
+	void handleProjectHyperlinkClick(ActionEvent event) {
+<span class="nc" id="L250">		String link = this.projectHyperlink.getText();</span>
+<span class="nc bnc" id="L251" title="All 4 branches missed.">		if (link != null &amp;&amp; !link.trim().isEmpty()) {</span>
+			try {
+<span class="nc" id="L253">				java.awt.Desktop.getDesktop().browse(java.net.URI.create(link));</span>
+<span class="nc" id="L254">			} catch (IOException e) {</span>
+<span class="nc" id="L255">				this.showAlert(&quot;Error&quot;, &quot;Failed to open the link.&quot;);</span>
+<span class="nc" id="L256">			}</span>
+		} else {
+<span class="nc" id="L258">			this.showAlert(&quot;Error&quot;, &quot;No link provided.&quot;);</span>
+		}
+<span class="nc" id="L260">	}</span>
+
+    @FXML
+    void handleSearchBar(ActionEvent event) {
+		// Not implemented yet
+<span class="nc" id="L265">    }</span>
+
+    @FXML
+    void handleSearchButtoneClick(MouseEvent event) {
+		// Not implemented yet
+<span class="nc" id="L270">    }</span>
+
+    @FXML
+    void handleUploadButtonClick(ActionEvent event) {
+<span class="nc" id="L274">		DirectoryChooser directoryChooser = new DirectoryChooser();</span>
+<span class="nc" id="L275">        File selectedFolder = directoryChooser.showDialog(new Stage());</span>
+
+<span class="nc bnc" id="L277" title="All 4 branches missed.">        if (selectedFolder != null &amp;&amp; selectedFolder.isDirectory()) {</span>
+<span class="nc" id="L278">            this.currentDirectory = selectedFolder;</span>
+<span class="nc" id="L279">            this.updateFolderList(this.currentDirectory);</span>
+<span class="nc" id="L280">			this.initialDirectory = this.currentDirectory;</span>
+        }
+<span class="nc" id="L282">    }</span>
+	
+	private void updateFolderList(File directory) {
+<span class="nc" id="L285">        this.folderListView.getItems().clear();</span>
+<span class="nc" id="L286">        File[] files = directory.listFiles();</span>
+        
+<span class="nc bnc" id="L288" title="All 2 branches missed.">        if (files != null) {</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">            for (File file : files) {</span>
+<span class="nc" id="L290">                this.folderListView.getItems().add(file.getName());</span>
+            }
+        }
+<span class="nc" id="L293">    }</span>
+	
+	private boolean isCodeFile(File file) {
+<span class="nc" id="L296">        List&lt;String&gt; allowedExtensions = Arrays.asList(&quot;.txt&quot;, &quot;.java&quot;, &quot;.py&quot;, &quot;.cpp&quot;);</span>
+<span class="nc" id="L297">        String fileName = file.getName().toLowerCase();</span>
+        
+<span class="nc" id="L299">        return allowedExtensions.stream().anyMatch(fileName::endsWith);</span>
+    }
+	
+	private void displayFileContent(File file) {
+        try {
+<span class="nc" id="L304">            String content = Files.readString(file.toPath());</span>
+<span class="nc" id="L305">            this.codeTextArea.setText(content);</span>
+<span class="nc" id="L306">            this.codeTextAreaPane.setVisible(true);</span>
+<span class="nc" id="L307">            this.folderListView.setVisible(false);</span>
+<span class="nc" id="L308">        } catch (IOException e) {</span>
+<span class="nc" id="L309">            this.showAlert(&quot;Error&quot;, &quot;Could not read file.&quot;);</span>
+<span class="nc" id="L310">        }</span>
+<span class="nc" id="L311">    }</span>
+		
+	
+	/**
+	* this returns the anchor pane that will be changed 
+	*
+	* @return anchorPane that is in use to help change views
+	*/
+	public AnchorPane getAnchorPane() {
+<span class="nc" id="L320">		return this.anchorPane;</span>
+	}
+
+	/**
+	*this sets the anchorPane that will be used as the view
+	*
+	* @param tempAnchorPane which it the anchor pane being set to
+	*/
+	public void setAnchorPane(AnchorPane tempAnchorPane) {
+<span class="nc" id="L329">		this.anchorPane = tempAnchorPane;</span>
+<span class="nc" id="L330">	}</span>
+	
+	private void showAlert(String title, String message) {
+<span class="nc" id="L333">        Alert alert = new Alert(AlertType.INFORMATION);</span>
+<span class="nc" id="L334">        alert.setTitle(title);</span>
+<span class="nc" id="L335">        alert.setHeaderText(null);</span>
+<span class="nc" id="L336">        alert.setContentText(message);</span>
+<span class="nc" id="L337">        alert.showAndWait();</span>
+<span class="nc" id="L338">    }</span>
+	
+	@FXML
+	public void initialize() {
+<span class="nc" id="L342">		this.initUserNames();</span>
+<span class="nc" id="L343">		this.initProjectDetails();</span>
+		
+<span class="nc" id="L345">		this.codeTextAreaPane.setVisible(false);</span>
+<span class="nc" id="L346">		this.folderListView.setVisible(true);</span>
+<span class="nc" id="L347">		this.uploadButton.setVisible(false);</span>
+<span class="nc" id="L348">		this.saveButton.setVisible(false);</span>
+<span class="nc" id="L349">		this.projectNameTextField.setVisible(false);</span>
+<span class="nc" id="L350">		this.projectTitleLabel.setVisible(true);</span>
+<span class="nc" id="L351">		this.editButton.setVisible(true);</span>
+		//this.lastEditedLabel.setText(&quot;Last Edited: Not yet saved&quot;);
+		//this.projectHyperlink.setText(&quot;No link provided&quot;);
+		
+<span class="nc" id="L355">		this.bindPropertiesAndListners();</span>
+<span class="nc" id="L356">	}</span>
+	
+	private void initUserNames() {
+<span class="nc bnc" id="L359" title="All 2 branches missed.">		if (Session.getInstance().getCurrentUser() != null) {</span>
+<span class="nc" id="L360">			String username = Session.getInstance().getCurrentUser().getUsername();</span>
+<span class="nc" id="L361">			this.accountHeader.setText(username);</span>
+<span class="nc bnc" id="L362" title="All 2 branches missed.">			if (AccountContext.getInstance().hasUserToView()) {</span>
+<span class="nc" id="L363">				User viewed = AccountContext.getInstance().getUserToView();</span>
+<span class="nc" id="L364">				this.userName.setText(viewed.getUsername());</span>
+<span class="nc" id="L365">			} else {</span>
+<span class="nc" id="L366">				this.userName.setText(&quot;Error: Select Another User&quot;);</span>
+			}
+<span class="nc" id="L368">		} else {</span>
+<span class="nc" id="L369">			GuiHelper.switchView(this.anchorPane, Views.LOGIN);</span>
+<span class="nc" id="L370">			this.accountHeader.setText(&quot;Account&quot;);</span>
+		}
+<span class="nc" id="L372">	}</span>
+	
+	private void initProjectDetails() {
+<span class="nc bnc" id="L375" title="All 2 branches missed.">		if (ProjectContext.getInstance().hasSelectedProject()) {</span>
+<span class="nc" id="L376">			Project selectedProject = ProjectContext.getInstance().getSelectedProject();</span>
+<span class="nc" id="L377">			this.projectTitleLabel.setText(selectedProject.getName());</span>
+<span class="nc" id="L378">			this.projectNameTextField.setText(selectedProject.getName());</span>
+<span class="nc" id="L379">			this.descriptionTextArea.setText(selectedProject.getDescription());</span>
+<span class="nc" id="L380">			this.lastEditedLabel.setText(&quot;Last Edited: &quot; + selectedProject.getFormattedLastEdited());</span>
+<span class="nc" id="L381">			this.hyperLinkTextField.setText(selectedProject.getHyperlink());</span>
+<span class="nc" id="L382">			String projectLink = this.hyperLinkTextField.getText();</span>
+<span class="nc bnc" id="L383" title="All 4 branches missed.">			if (projectLink != null &amp;&amp; !projectLink.isEmpty()) {</span>
+<span class="nc" id="L384">				this.projectHyperlink.setText(projectLink);</span>
+			} else {
+<span class="nc" id="L386">				this.projectHyperlink.setText(&quot;No link provided&quot;);</span>
+			}
+<span class="nc bnc" id="L388" title="All 2 branches missed.">			if (selectedProject.getRootDirectory() != null) {</span>
+<span class="nc" id="L389">				this.initialDirectory = selectedProject.getRootDirectory();</span>
+<span class="nc" id="L390">				this.currentDirectory = this.initialDirectory;</span>
+<span class="nc" id="L391">				this.updateFolderList(this.currentDirectory);</span>
+			} else {
+<span class="nc" id="L393">				this.folderListView.getItems().clear();</span>
+<span class="nc" id="L394">				this.folderListView.getItems().add(&quot;No uploaded files for this project.&quot;);</span>
+			}
+<span class="nc" id="L396">			this.hyperLinkTextField.clear();</span>
+<span class="nc" id="L397">		} else {</span>
+<span class="nc" id="L398">			this.showAlert(&quot;Error&quot;, &quot;No project selected to view.&quot;);</span>
+<span class="nc" id="L399">			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);</span>
+		}
+<span class="nc" id="L401">	}</span>
+
+	
+	private void bindPropertiesAndListners() {
+<span class="nc" id="L405">		this.folderListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -&gt; {</span>
+<span class="nc bnc" id="L406" title="All 2 branches missed.">			if (newValue != null) {</span>
+<span class="nc" id="L407">				File selectedFile = new File(this.currentDirectory, newValue);</span>
+
+<span class="nc bnc" id="L409" title="All 2 branches missed.">				if (selectedFile.isDirectory()) {</span>
+<span class="nc" id="L410">					this.currentDirectory = selectedFile;</span>
+<span class="nc" id="L411">					this.updateFolderList(this.currentDirectory);</span>
+<span class="nc bnc" id="L412" title="All 2 branches missed.">				} else if (this.isCodeFile(selectedFile)) {</span>
+<span class="nc" id="L413">					this.displayFileContent(selectedFile);</span>
+				}
+			}
+<span class="nc" id="L416">		});</span>
+<span class="nc" id="L417">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
