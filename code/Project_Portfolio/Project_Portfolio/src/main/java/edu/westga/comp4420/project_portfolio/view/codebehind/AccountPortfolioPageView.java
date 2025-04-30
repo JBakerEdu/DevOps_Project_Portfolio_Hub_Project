@@ -142,9 +142,7 @@ public class AccountPortfolioPageView {
     @FXML
     void handleDeleteProjectsButtonClick(ActionEvent event) {
 		Object source = event.getSource();
-
 		int indexOffset = 0;
-
 		if (source == this.delete1) {
 			indexOffset = 0;
 		} else if (source == this.delete2) {
@@ -154,16 +152,13 @@ public class AccountPortfolioPageView {
 		} else {
 			return;
 		}
-
 		int projectIndex = (this.currentPage * this.projectsPerPage) + indexOffset;
 
 		if (projectIndex < this.currentProjects.size()) {
 			boolean confirmed = this.confirmDeletion();
-
 			if (confirmed) {
 				Project projectToDelete = this.currentProjects.get(projectIndex);
 				Session.getInstance().getCurrentUser().getProjectManager().removeProject(projectToDelete);
-
 				this.loadUserProjects(Session.getInstance().getCurrentUser());
 				this.showAlert("Deleted", "The project has been deleted successfully.");
 			}
@@ -178,7 +173,6 @@ public class AccountPortfolioPageView {
 		alert.showAndWait();
 	}
 
-	
 	private boolean confirmDeletion() {
 		javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
 		alert.setTitle("Confirm Deletion");
@@ -186,7 +180,6 @@ public class AccountPortfolioPageView {
 		alert.setContentText("This action cannot be undone.");
 		return alert.showAndWait().filter(response -> response == javafx.scene.control.ButtonType.OK).isPresent();
 	}
-
 
     @FXML
     void handleEditButtonClick(ActionEvent event) {
@@ -332,11 +325,6 @@ public class AccountPortfolioPageView {
 		}
 	}
 
-	/**
-	* Loads the user's projects into the account page.
-	*
-	* @param user the user whose projects to display
-	*/
 	private void loadUserProjects(User user) {
 		this.currentProjects = user.getProjectManager().getProjects();
 		this.currentPage = 0;
@@ -350,11 +338,9 @@ public class AccountPortfolioPageView {
 		this.projectDescription1.clear();
 		this.projectDescription2.clear();
 		this.projectDescription3.clear();
-
 		this.projectPane1.setVisible(false);
 		this.projectPane2.setVisible(false);
 		this.projectPane3.setVisible(false);
-
 		int startIndex = this.currentPage * this.projectsPerPage;
 
 		if (startIndex < this.currentProjects.size()) {
@@ -362,25 +348,21 @@ public class AccountPortfolioPageView {
 			this.projectEdit1.setText(this.currentProjects.get(startIndex).getFormattedLastEdited());
 			this.projectDescription1.setText(this.currentProjects.get(startIndex).getDescription());
 		}
-
 		if (startIndex + 1 < this.currentProjects.size()) {
 			this.projectPane2.setVisible(true);
 			this.projectEdit2.setText(this.currentProjects.get(startIndex + 1).getFormattedLastEdited());
 			this.projectDescription2.setText(this.currentProjects.get(startIndex + 1).getDescription());
 		}
-
 		if (startIndex + 2 < this.currentProjects.size()) {
 			this.projectPane3.setVisible(true);
 			this.projectEdit3.setText(this.currentProjects.get(startIndex + 2).getFormattedLastEdited());
 			this.projectDescription3.setText(this.currentProjects.get(startIndex + 2).getDescription());
 		}
-
 		this.updateNavigationButtons();
 	}
 	
 	private void updateNavigationButtons() {
 		int totalPages = (int) Math.ceil((double) this.currentProjects.size() / this.projectsPerPage);
-
 		this.lastProjectsButton.setDisable(this.currentPage == 0);
 		this.nextProjectsButton.setDisable(this.currentPage >= totalPages - 1);
 	}

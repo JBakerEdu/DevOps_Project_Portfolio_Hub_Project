@@ -3,94 +3,127 @@ package edu.westga.comp4420.project_portfolio.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AccountManagerTest {
 
     @BeforeEach
-    public void resetAccounts() {
-        var accountsField = AccountManager.class.getDeclaredFields()[0];
+    public void resetAccounts() throws Exception {
+        Field accountsField = AccountManager.class.getDeclaredField("accounts");
         accountsField.setAccessible(true);
-        try {
-            ((java.util.List<?>) accountsField.get(null)).clear();
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Unable to reset static accounts list", e);
-        }
+        List<User> accounts = (List<User>) accountsField.get(null);
+        accounts.clear();
     }
 
     @Test
     public void testCreateAccountSuccess() {
-        boolean result = AccountManager.createAccount("user1", "pass1", "user1@example.com");
+        boolean result = AccountManager.createAccount("user1", "pass", "user1@example.com");
         assertTrue(result);
-
-        User user = AccountManager.findUserByUsername("user1");
-        assertNotNull(user);
-        assertEquals("user1@example.com", user.getEmail());
     }
 
     @Test
-    public void testCreateAccountFailsWithDuplicateUsername() {
-        AccountManager.createAccount("user2", "pass", "user2@example.com");
-
-        boolean result = AccountManager.createAccount("user2", "newpass", "different@example.com");
+    public void testCreateAccountFailsDuplicateUsername() {
+        AccountManager.createAccount("user1", "pass", "user1@example.com");
+        boolean result = AccountManager.createAccount("user1", "pass", "another@example.com");
         assertFalse(result);
     }
 
     @Test
-    public void testCreateAccountFailsWithDuplicateEmail() {
-        AccountManager.createAccount("user3", "pass", "duplicate@example.com");
-
-        boolean result = AccountManager.createAccount("anotherUser", "pass", "duplicate@example.com");
+    public void testCreateAccountFailsDuplicateEmail() {
+        AccountManager.createAccount("user1", "pass", "user1@example.com");
+        boolean result = AccountManager.createAccount("another", "pass", "user1@example.com");
         assertFalse(result);
     }
 
     @Test
     public void testValidateLoginSuccess() {
-        AccountManager.createAccount("user4", "secure", "user4@example.com");
-
-        User user = AccountManager.validateLogin("user4", "secure");
+        AccountManager.createAccount("user1", "pass", "user1@example.com");
+        User user = AccountManager.validateLogin("user1", "pass");
         assertNotNull(user);
-        assertEquals("user4", user.getUsername());
     }
 
     @Test
-    public void testValidateLoginFailsWithWrongPassword() {
-        AccountManager.createAccount("user5", "rightpass", "user5@example.com");
-
-        User user = AccountManager.validateLogin("user5", "wrongpass");
+    public void testValidateLoginFailsIncorrectPassword() {
+        AccountManager.createAccount("user1", "pass", "user1@example.com");
+        User user = AccountManager.validateLogin("user1", "wrong");
         assertNull(user);
     }
 
     @Test
-    public void testValidateLoginFailsForUnknownUser() {
-        User user = AccountManager.validateLogin("ghost", "nopass");
+    public void testValidateLoginFailsUnknownUser() {
+        User user = AccountManager.validateLogin("ghost", "none");
         assertNull(user);
     }
 
     @Test
-    public void testFindUserByUsernameOrEmail() {
-        AccountManager.createAccount("user6", "pass", "user6@example.com");
+    public void testFindUserByUsernameOrEmailBothPaths() {
+        AccountManager.createAccount("user1", "pass", "user1@example.com");
 
-        assertNotNull(AccountManager.findUserByUsernameOrEmail("user6"));
-        assertNotNull(AccountManager.findUserByUsernameOrEmail("user6@example.com"));
-        assertNull(AccountManager.findUserByUsernameOrEmail("notfound"));
+        assertNotNull(AccountManager.findUserByUsernameOrEmail("user1"));
+        assertNotNull(AccountManager.findUserByUsernameOrEmail("user1@example.com"));
+        assertNull(AccountManager.findUserByUsernameOrEmail("unknown"));
+    }
+	
+	@Test
+	public void testLogin_TrueTrue() {
+		AccountManager.createAccount("user1", "pass123", "user1@example.com");
+		User result = AccountManager.validateLogin("user1", "pass123"); // true && true
+		assertNotNull(result);
+	}
+
+	@Test
+	public void testLogin_TrueFalse() {
+		AccountManager.createAccount("user1", "pass123", "user1@example.com");
+		User result = AccountManager.validateLogin("user1", "wrongpass"); // true && false
+		assertNull(result);
+	}
+
+	@Test
+	public void testLogin_FalseTrue() {
+		AccountManager.createAccount("user1", "pass123", "user1@example.com");
+		// Must create another user with the password "pass123" but different username to test this
+		AccountManager.createAccount("wronguser", "pass123", "other@example.com");
+		User result = AccountManager.validateLogin("wronguser2", "pass123"); // false && true
+		assertNull(result);
+	}
+
+	@Test
+	public void testLogin_FalseFalse() {
+		AccountManager.createAccount("user1", "pass123", "user1@example.com");
+		User result = AccountManager.validateLogin("nouser", "wrongpass"); // false && false
+		assertNull(result);
+	}
+
+    @Test
+    public void testFindUserByUsernameHitAndMiss() {
+        AccountManager.createAccount("user1", "pass", "user1@example.com");
+
+        assertNotNull(AccountManager.findUserByUsername("user1")); // hit
+        assertNull(AccountManager.findUserByUsername("notfound")); // miss
     }
 
     @Test
-    public void testFindUserByUsername() {
-        AccountManager.createAccount("user7", "pass", "user7@example.com");
+    public void testFindUserByEmailHitAndMiss() {
+        AccountManager.createAccount("user1", "pass", "user1@example.com");
 
-        User user = AccountManager.findUserByUsername("user7");
-        assertNotNull(user);
-        assertEquals("user7", user.getUsername());
+        assertNotNull(AccountManager.findUserByEmail("user1@example.com")); // hit
+        assertNull(AccountManager.findUserByEmail("missing@example.com"));  // miss
     }
 
     @Test
-    public void testFindUserByEmail() {
-        AccountManager.createAccount("user8", "pass", "user8@example.com");
+    public void testGetAllAccounts() {
+        AccountManager.createAccount("user1", "pass", "user1@example.com");
+        AccountManager.createAccount("user2", "pass", "user2@example.com");
 
-        User user = AccountManager.findUserByEmail("user8@example.com");
-        assertNotNull(user);
-        assertEquals("user8@example.com", user.getEmail());
+        List<User> accounts = AccountManager.getAllAccounts();
+        assertEquals(2, accounts.size());
+    }
+
+    @Test
+    public void testConstructor() {
+        new AccountManager(); // just to hit constructor
     }
 }

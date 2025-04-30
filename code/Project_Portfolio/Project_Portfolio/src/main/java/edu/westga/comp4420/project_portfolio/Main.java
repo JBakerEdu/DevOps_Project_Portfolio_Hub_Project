@@ -1,5 +1,7 @@
 package edu.westga.comp4420.project_portfolio;
 
+import edu.westga.comp4420.project_portfolio.util.PopulateSampleData;
+
 import java.io.IOException;
 
 import javafx.application.Application;
@@ -28,6 +30,7 @@ public class Main extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws IOException {
+		PopulateSampleData.populateSampleData();
 		Parent parent = FXMLLoader.load(getClass().getResource(Main.GUI_RESOURCE));
 		Scene scene = new Scene(parent);
 		primaryStage.setTitle(WINDOW_TITLE);

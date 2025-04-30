@@ -1,5 +1,11 @@
 package edu.westga.comp4420.project_portfolio.view.codebehind;
 
+import java.util.List;
+import java.util.Collections;
+import edu.westga.comp4420.project_portfolio.model.User;
+import edu.westga.comp4420.project_portfolio.model.Project;
+import edu.westga.comp4420.project_portfolio.model.ProjectContext;
+import edu.westga.comp4420.project_portfolio.model.AccountManager;
 import edu.westga.comp4420.project_portfolio.model.Session;
 
 import javafx.event.ActionEvent;
@@ -20,6 +26,7 @@ import javafx.scene.layout.Pane;
  * @version Spring 2025
  */
 public class HomePageView {
+	private Project[] displayedProjects = new Project[4];
 	
 	@FXML
     private AnchorPane anchorPane;
@@ -123,8 +130,24 @@ public class HomePageView {
 
     @FXML
     void handleViewButtonClick(ActionEvent event) {
-		GuiHelper.switchView(this.anchorPane, Views.PROJECTS);
-    }
+		Button source = (Button) event.getSource();
+
+		int index = -1;
+		if (source == this.projectView1) {
+			index = 0;
+		} else if (source == this.projectView2) {
+			index = 1;
+		} else if (source == this.projectView3) {
+			index = 2;
+		} else if (source == this.projectView4) {
+			index = 3;
+		}
+
+		if (index >= 0 && this.displayedProjects[index] != null) {
+			ProjectContext.getInstance().setSelectedProject(this.displayedProjects[index]);
+			GuiHelper.switchView(this.anchorPane, Views.PROJECTS);
+		}
+	}
 	
 	/**
 	* this returns the anchor pane that will be changed 
@@ -154,6 +177,75 @@ public class HomePageView {
 		} else {
 			this.accountHeader.setText("Account");
 		}
+		this.loadRandomProjectsToHome();
 	}
 	
+	private void loadRandomProjectsToHome() {
+		Pane[] panes = { this.projectPane1, this.projectPane2, this.projectPane3, this.projectPane4 };
+		TextField[] editors = { this.projectEdit1, this.projectEdit2, this.projectEdit3, this.projectEdit4 };
+		TextArea[] descriptions = { this.projectDescription1, this.projectDescription2, this.projectDescription3, this.projectDescription4 };
+		for (int i = 0; i < panes.length; i++) {
+			this.setProjectSlotVisible(panes[i], false);
+			this.clearText(editors[i]);
+			this.clearText(descriptions[i]);
+		}
+
+		List<User> users = AccountManager.getAllAccounts();
+		if (users == null || users.isEmpty()) {
+			return;
+		}
+		Collections.shuffle(users);
+		int filled = 0;
+		int attempts = 0;
+		while (filled < 4 && attempts < users.size()) {
+			User user = users.get(attempts++);
+			Project validProject = this.getRandomProjectFromUser(user);
+			if (validProject != null) {
+				this.setProjectSlotVisible(panes[filled], true);
+				editors[filled].setText(this.getSafeDate(validProject));
+				descriptions[filled].setText(this.getSafeDescription(validProject));
+				this.displayedProjects[filled] = validProject;
+				filled++;
+			}
+		}
+	}
+	
+	private Project getRandomProjectFromUser(User user) {
+		if (user == null || user.getProjectManager() == null) {
+			return null;
+		}
+
+		List<Project> projects = user.getProjectManager().getProjects();
+		if (projects == null || projects.isEmpty()) {
+			return null;
+		}
+
+		Collections.shuffle(projects);
+		for (Project project : projects) {
+			if (project != null) {
+				return project;
+			}
+		}
+		return null;
+	}
+
+	private void setProjectSlotVisible(Pane pane, boolean visible) {
+		if (pane != null) {
+			pane.setVisible(visible);
+		}
+	}
+
+	private void clearText(javafx.scene.control.TextInputControl control) {
+		if (control != null) {
+			control.clear();
+		}
+	}
+
+	private String getSafeDate(Project project) {
+		return (project.getFormattedLastEdited() != null) ? project.getFormattedLastEdited() : "Unknown Date";
+	}
+
+	private String getSafeDescription(Project project) {
+		return (project.getDescription() != null) ? project.getDescription() : "(No description)";
+	}
 }

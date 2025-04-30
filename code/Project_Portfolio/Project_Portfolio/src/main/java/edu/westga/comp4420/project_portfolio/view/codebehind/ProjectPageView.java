@@ -3,6 +3,7 @@ package edu.westga.comp4420.project_portfolio.view.codebehind;
 import edu.westga.comp4420.project_portfolio.model.Session;
 import edu.westga.comp4420.project_portfolio.model.User;
 import edu.westga.comp4420.project_portfolio.model.AccountContext;
+import edu.westga.comp4420.project_portfolio.model.AccountManager;
 import edu.westga.comp4420.project_portfolio.model.Project;
 import edu.westga.comp4420.project_portfolio.model.ProjectContext;
 
@@ -45,6 +46,7 @@ public class ProjectPageView {
 	private File initialDirectory;
 	private String selectedItem;
 	private Project currentProject;
+	private boolean isOwner;
 	
 	@FXML
     private AnchorPane anchorPane;
@@ -348,10 +350,7 @@ public class ProjectPageView {
 		this.saveButton.setVisible(false);
 		this.projectNameTextField.setVisible(false);
 		this.projectTitleLabel.setVisible(true);
-		this.editButton.setVisible(true);
-		//this.lastEditedLabel.setText("Last Edited: Not yet saved");
-		//this.projectHyperlink.setText("No link provided");
-		
+		this.editButton.setVisible(this.isOwner);		
 		this.bindPropertiesAndListners();
 	}
 	
@@ -366,25 +365,27 @@ public class ProjectPageView {
 				this.userName.setText("Error: Select Another User");
 			}
 		} else {
-			GuiHelper.switchView(this.anchorPane, Views.LOGIN);
 			this.accountHeader.setText("Account");
 		}
 	}
-	
+
 	private void initProjectDetails() {
 		if (ProjectContext.getInstance().hasSelectedProject()) {
 			Project selectedProject = ProjectContext.getInstance().getSelectedProject();
+			this.currentProject = selectedProject;
 			this.projectTitleLabel.setText(selectedProject.getName());
 			this.projectNameTextField.setText(selectedProject.getName());
 			this.descriptionTextArea.setText(selectedProject.getDescription());
 			this.lastEditedLabel.setText("Last Edited: " + selectedProject.getFormattedLastEdited());
 			this.hyperLinkTextField.setText(selectedProject.getHyperlink());
+
 			String projectLink = this.hyperLinkTextField.getText();
 			if (projectLink != null && !projectLink.isEmpty()) {
 				this.projectHyperlink.setText(projectLink);
 			} else {
 				this.projectHyperlink.setText("No link provided");
 			}
+
 			if (selectedProject.getRootDirectory() != null) {
 				this.initialDirectory = selectedProject.getRootDirectory();
 				this.currentDirectory = this.initialDirectory;
@@ -394,13 +395,39 @@ public class ProjectPageView {
 				this.folderListView.getItems().add("No uploaded files for this project.");
 			}
 			this.hyperLinkTextField.clear();
+			this.updateEditPermissions();
 		} else {
 			this.showAlert("Error", "No project selected to view.");
 			GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
 		}
 	}
-
 	
+	private void updateEditPermissions() {
+		Project selectedProject = ProjectContext.getInstance().getSelectedProject();
+		if (selectedProject == null) {
+			this.userName.setText("Unknown Owner");
+			this.editButton.setVisible(false);
+			return;
+		}
+
+		User owner = null;
+		for (User user : AccountManager.getAllAccounts()) {
+			if (user.getProjectManager().getProjects().contains(selectedProject)) {
+				owner = user;
+				break;
+			}
+		}
+
+		if (owner != null) {
+			this.userName.setText(owner.getUsername());
+			this.isOwner = Session.getInstance().isLoggedIn() && Session.getInstance().getCurrentUser().getUsername().equals(owner.getUsername());
+			this.editButton.setVisible(this.isOwner);
+		} else {
+			this.userName.setText("Unknown Owner");
+			this.editButton.setVisible(false);
+		}
+	}
+
 	private void bindPropertiesAndListners() {
 		this.folderListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if (newValue != null) {
@@ -415,5 +442,4 @@ public class ProjectPageView {
 			}
 		});
 	}
-	
 }

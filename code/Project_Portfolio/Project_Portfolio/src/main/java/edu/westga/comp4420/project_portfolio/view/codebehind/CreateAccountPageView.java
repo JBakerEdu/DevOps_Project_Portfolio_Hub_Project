@@ -115,8 +115,6 @@ public class CreateAccountPageView {
 		return isValid;
 	}
 
-
-
     @FXML
     void handleHasAccountClick(MouseEvent event) {
 		GuiHelper.switchView(this.anchorPane, Views.LOGIN);
@@ -158,9 +156,8 @@ public class CreateAccountPageView {
 		this.errorNotCorrectPassword.setVisible(false);
 		this.errorNotValidEmail.setVisible(false);
 		this.errorNotValidUsername.setVisible(false);
-
 		this.createAccountSubmitButton.setDisable(true);
-
+		
 		this.userNameTextFeild.textProperty().addListener((observable, oldValue, newValue) -> {
 			this.checkFieldsAndToggleButton();
 		});
@@ -180,10 +177,9 @@ public class CreateAccountPageView {
 
 	private void checkFieldsAndToggleButton() {
 		boolean allFieldsFilled = !this.userNameTextFeild.getText().trim().isEmpty()
-				&& !this.passwordTextFeild.getText().trim().isEmpty()
-				&& !this.confirmPasswordTextFeild.getText().trim().isEmpty()
-				&& !this.emailTextFeild.getText().trim().isEmpty();
-
+			&& !this.passwordTextFeild.getText().trim().isEmpty()
+			&& !this.confirmPasswordTextFeild.getText().trim().isEmpty()
+			&& !this.emailTextFeild.getText().trim().isEmpty();
 		this.createAccountSubmitButton.setDisable(!allFieldsFilled);
 	}
 
@@ -193,5 +189,4 @@ public class CreateAccountPageView {
         this.errorNotValidEmail.setVisible(false);
         this.errorNotValidUsername.setVisible(false);
     }
-	
 }

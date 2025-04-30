@@ -51,10 +51,8 @@ public class LoginPageView {
     @FXML
 	void handleLoginButtonClick(ActionEvent event) {
 		this.hideAllErrors();
-
 		String enteredValue = this.userNameTextFeild.getText();
 		String password = this.passwordTextFeild.getText();
-
 		User user = AccountManager.findUserByUsernameOrEmail(enteredValue);
 		if (user == null) {
 			this.errorNotValidUsername.setVisible(true);
@@ -65,7 +63,6 @@ public class LoginPageView {
 			this.errorNotCorrectPassword.setVisible(true);
 			return;
 		}
-
 		Session.getInstance().login(user);
 		AccountContext.getInstance().setUserToView(user);
 		GuiHelper.switchView(this.anchorPane, Views.ACCOUNT);
@@ -124,5 +121,4 @@ public class LoginPageView {
 		boolean fieldsFilled = !this.userNameTextFeild.getText().trim().isEmpty() && !this.passwordTextFeild.getText().trim().isEmpty();
 		this.loginSubmitButton.setDisable(!fieldsFilled);
 	}
-
 }
