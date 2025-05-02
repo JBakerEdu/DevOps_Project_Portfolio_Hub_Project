@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-Portfolio-Project</a> &gt; <a href="index.source.html" class="el_package">edu.westga.comp4420.project_portfolio.model</a> &gt; <span class="el_source">ProjectManager.java</span></div><h1>ProjectManager.java</h1><pre class="source lang-java linenums">package edu.westga.comp4420.project_portfolio.model;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Manages a collection of projects for a specific user.
+ * 
+ * @author Jacob Baker
+ * @version Spring 2025
+ */
+public class ProjectManager {
+    private List&lt;Project&gt; projects;
+
+    /**
+     * Constructs a new ProjectManager with an empty list of projects.
+     */
+<span class="fc" id="L19">    public ProjectManager() {</span>
+<span class="fc" id="L20">        this.projects = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * Adds a new project to the manager.
+     *
+     * @param name the name of the project (must not be null or blank)
+     * @param description the project description
+     * @param hyperlink an external link to the project (e.g. GitHub)
+     * @param rootDirectory the file directory associated with the project
+     * @throws IllegalArgumentException if the name is null or blank
+     */
+    public void addProject(String name, String description, String hyperlink, File rootDirectory) {
+<span class="fc bfc" id="L33" title="All 4 branches covered.">        if (name == null || name.isBlank()) {</span>
+<span class="fc" id="L34">            throw new IllegalArgumentException(&quot;Project name cannot be empty&quot;);</span>
+        }
+
+<span class="fc" id="L37">        Project project = new Project(name, description, hyperlink);</span>
+<span class="fc" id="L38">        project.setRootDirectory(rootDirectory);</span>
+
+<span class="fc" id="L40">        this.projects.add(project);</span>
+<span class="fc" id="L41">    }</span>
+
+    /**
+     * Removes a project from the manager.
+     *
+     * @param project the project to remove
+     */
+    public void removeProject(Project project) {
+<span class="fc" id="L49">        this.projects.remove(project);</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * Retrieves the list of all projects managed by this ProjectManager.
+     *
+     * @return a list of Project objects
+     */
+    public List&lt;Project&gt; getProjects() {
+<span class="fc" id="L58">        return this.projects;</span>
+    }
+
+    /**
+     * Retrieves a project by its name, ignoring case.
+     *
+     * @param name the name of the project to search for
+     * @return the matching Project, or null if not found or if the name is null/blank
+     */
+    public Project getProjectByName(String name) {
+<span class="fc bfc" id="L68" title="All 4 branches covered.">        if (name == null || name.isBlank()) {</span>
+<span class="fc" id="L69">            return null;</span>
+        }
+
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (Project project : this.projects) {</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            if (project.getName().equalsIgnoreCase(name)) {</span>
+<span class="fc" id="L74">                return project;</span>
+            }
+<span class="fc" id="L76">        }</span>
+<span class="fc" id="L77">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

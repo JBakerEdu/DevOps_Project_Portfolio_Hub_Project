@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccountManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project-Portfolio-Project</a> &gt; <a href="index.source.html" class="el_package">edu.westga.comp4420.project_portfolio.model</a> &gt; <span class="el_source">AccountManager.java</span></div><h1>AccountManager.java</h1><pre class="source lang-java linenums">package edu.westga.comp4420.project_portfolio.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Manages all registered user accounts within the system.
+ * 
+ * @author Jacob Baker
+ * @version Spring 2025
+ */
+<span class="fc" id="L12">public class AccountManager {</span>
+<span class="fc" id="L13">    private static List&lt;User&gt; accounts = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * Creates a new user account if the username and email are unique.
+     *
+     * @param username the desired username
+     * @param password the desired password
+     * @param email the email address for the account
+     * @return true if the account was created, false if the username or email is already in use
+     */
+    public static boolean createAccount(String username, String password, String email) {
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (findUserByUsernameOrEmail(username) != null) {</span>
+<span class="fc" id="L25">            return false;</span>
+        }
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (findUserByUsernameOrEmail(email) != null) {</span>
+<span class="fc" id="L28">            return false;</span>
+        }
+<span class="fc" id="L30">        accounts.add(new User(username, password, email));</span>
+<span class="fc" id="L31">        return true;</span>
+    }
+
+    /**
+     * Validates login credentials by matching both username and password.
+     *
+     * @param username the entered username
+     * @param password the entered password
+     * @return the matching User object if valid; null otherwise
+     */
+    public static User validateLogin(String username, String password) {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        for (User user : accounts) {</span>
+<span class="fc bfc" id="L43" title="All 4 branches covered.">            if (user.getUsername().equals(username) &amp;&amp; user.getPassword().equals(password)) {</span>
+<span class="fc" id="L44">                return user;</span>
+            }
+<span class="fc" id="L46">        }</span>
+<span class="fc" id="L47">        return null;</span>
+    }
+
+    /**
+     * Finds a user by matching either username or email.
+     *
+     * @param input the username or email to look up
+     * @return the matching User if found; null otherwise
+     */
+    public static User findUserByUsernameOrEmail(String input) {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (User user : accounts) {</span>
+<span class="fc bfc" id="L58" title="All 4 branches covered.">            if (user.getUsername().equals(input) || user.getEmail().equals(input)) {</span>
+<span class="fc" id="L59">                return user;</span>
+            }
+<span class="fc" id="L61">        }</span>
+<span class="fc" id="L62">        return null;</span>
+    }
+
+    /**
+     * Finds a user by their username.
+     *
+     * @param username the username to look up
+     * @return the matching User if found; null otherwise
+     */
+    public static User findUserByUsername(String username) {
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (User user : accounts) {</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            if (user.getUsername().equals(username)) {</span>
+<span class="fc" id="L74">                return user;</span>
+            }
+<span class="fc" id="L76">        }</span>
+<span class="fc" id="L77">        return null;</span>
+    }
+
+    /**
+     * Finds a user by their email.
+     *
+     * @param email the email to look up
+     * @return the matching User if found; null otherwise
+     */
+    public static User findUserByEmail(String email) {
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        for (User user : accounts) {</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            if (user.getEmail().equals(email)) {</span>
+<span class="fc" id="L89">                return user;</span>
+            }
+<span class="fc" id="L91">        }</span>
+<span class="fc" id="L92">        return null;</span>
+    }
+
+    /**
+     * Retrieves the list of all registered user accounts.
+     *
+     * @return a list of all users
+     */
+    public static List&lt;User&gt; getAllAccounts() {
+<span class="fc" id="L101">        return accounts;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

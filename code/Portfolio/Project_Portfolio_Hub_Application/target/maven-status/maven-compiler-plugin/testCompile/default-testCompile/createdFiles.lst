@@ -1,0 +1,8 @@
+edu\westga\comp4420\project_portfolio\model\AccountManagerTest.class
+edu\westga\comp4420\project_portfolio\model\ProjectContextTest.class
+edu\westga\comp4420\project_portfolio\model\AccountContextTest.class
+edu\westga\comp4420\project_portfolio\model\SessionTest.class
+edu\westga\comp4420\project_portfolio\util\PopulateSampleDataTest.class
+edu\westga\comp4420\project_portfolio\model\ProjectManagerTest.class
+edu\westga\comp4420\project_portfolio\model\ProjectTest.class
+edu\westga\comp4420\project_portfolio\model\UserTest.class

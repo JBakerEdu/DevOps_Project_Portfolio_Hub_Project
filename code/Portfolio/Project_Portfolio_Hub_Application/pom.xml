@@ -90,7 +90,9 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <outputFile>${project.basedir}/Project_Portfolio_Hub_Executable.jar</outputFile>
+                            <!--<outputFile>${project.basedir}/Project_Portfolio_Hub_Executable.jar</outputFile>-->
+							<outputFile>${project.build.directory}/Project_Portfolio_Hub_Executable.jar</outputFile>
+
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>edu.westga.comp4420.project_portfolio.Launcher</mainClass>
@@ -116,8 +118,13 @@
                         </goals>
                         <configuration>
                             <headerType>gui</headerType>
+							<!--
                             <outfile>${project.basedir}/Project_Portfolio_Hub.exe</outfile>
                             <jar>${project.basedir}/Project_Portfolio_Hub_Executable.jar</jar>
+							-->
+							<outfile>${project.build.directory}/Project_Portfolio_Hub.exe</outfile>
+							<jar>${project.build.directory}/Project_Portfolio_Hub_Executable.jar</jar>
+
                             <dontWrapJar>false</dontWrapJar>
                             <errTitle>Error in Project Hub</errTitle>
                             <classPath>
