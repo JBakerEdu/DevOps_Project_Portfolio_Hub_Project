@@ -1,94 +1,95 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Project Hub</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="d-flex flex-column min-vh-100">
+	<head>
+		<meta charset="utf-8">
+		<title>Project Hub</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body class="d-flex flex-column min-vh-100">
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="/">Home</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="/projects">Projects</a>
-      </li>
-    </ul>
-  </nav>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="/">Home</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="/projects">Projects</a>
+				</li>
+			</ul>
+		</nav>
 
-  <main class="flex-fill">
-    <div class="container mt-4">
-      <div class="row mb-4">
-        <div class="col">
-          <h1>My DevOps Project Manager</h1>
-          <p>This minimal GitHub‑style manager lets you upload, download, and track your builds with ease. Perfect for showcasing CI/CD and DevOps workflows.</p>
-        </div>
-      </div>
+		<main class="flex-fill">
+			<div class="container mt-4">
+				<div class="row mb-4">
+					<div class="col">
+						<h1>My DevOps Project Manager</h1>
+						<p>Project Hub is a lightweight, portfolio-oriented platform designed as a simplified alternative to GitHub. It allows users to upload and showcase their software projects, while also browsing and viewing others' work. Ideal for students, developers, and freelancers, Project Hub serves as a centralized space to present personal or team projects in a clean and accessible format. Whether you're building a professional portfolio or just sharing progress, Project Hub makes it easy to manage and display your work.</p>
+					</div>
+				</div>
 
-      <div class="row mb-5">
-        <div class="col-md-6">
-          <h2>About This Project</h2>
-          <p>Built with Node.js, Express, and EJS, and styled using Bootstrap 4, Project Hub offers:</p>
-          <ul>
-            <li>Quick downloads of the latest build</li>
-            <li>Download history logging</li>
-            <li>Optional server‑side execution</li>
-          </ul>
+				<div class="row mb-5">
+					<div class="col-md-6">
+						<h2>Project Background</h2>
+						<p>Project Hub was developed in Java using the JavaFX framework for a modern, responsive desktop UI. All user interfaces were designed with Scene Builder, enabling a structured and visual layout approach. The application features consistent and custom styling through CSS, enhancing the look and feel of the JavaFX components.</p>
+						<p>The build process is managed with Maven, allowing for organized dependency management and streamlined project configuration. For testing, the project uses JUnit, ensuring reliability and correctness through unit testing of core functionalities.</p>
+						<p>This software emphasizes both functionality and presentation, offering a clean interface for users to upload, manage, and explore software projects thus, making it ideal for use as a personal project portfolio platform.</p>
+					  
+						<h2>About the UI</h2>
+						<p><strong>Home Page:</strong> This is the landing screen where users are first greeted. It features a clean welcome message, a login button for returning users, and showcases a few randomly selected public projects to explore. This helps users quickly get a sense of what the platform offers.</p>
+						<p><strong>Project Detail Page:</strong> Also known as the “About Your Project” view, this page displays all the information about a specific project. It includes metadata like the project name, summary, author, and date created. It also provides access to browse the uploaded project directory files, making it easy for others to review a project’s contents.</p>
+						<p><strong>Account Page:</strong> This is where users manage their profile and projects. From here, users can edit their account information, update profile details, and create new project entries to share on the platform. It serves as a control center for each user's portfolio management.</p>
+
+						<h2>Download Latest Build Executable Program</h2>
+						<a href="/api/download_project" class="btn btn-primary">Download Project Hub</a>
 		  
-		  <h2>Download Latest Build Executable Program</h2>
-          <p><strong><%= fileName %></strong></p>
-          <a href="/api/download_project" class="btn btn-primary">Download Project Hub</a>
-		  
-        </div>
-        <div class="col-md-6">
-          <div id="wireframeCarousel" class="carousel slide" data-ride="carousel" data-interval="5000">
-            <ol class="carousel-indicators">
-              <li data-target="#wireframeCarousel" data-slide-to="0" class="active"></li>
-              <li data-target="#wireframeCarousel" data-slide-to="1"></li>
-              <li data-target="#wireframeCarousel" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img class="d-block w-100" src="/images/DevOpsHomePage.PNG" alt="Wireframe 1">
-				<h5>Projects Hub's Home Page</h5>
-              </div>
-              <div class="carousel-item">
-                <img class="d-block w-100" src="/images/DevOpsProjectAboutPage.PNG" alt="Wireframe 2">
-				<h5>The Page All About Your Project</h5>
-              </div>
-              <div class="carousel-item">
-                <img class="d-block w-100" src="/images/DevOpsAccountPage.PNG" alt="Wireframe 3">
-				<h5>View Your Account and Add More Information</h5>
-              </div>
-            </div>
-            <a class="carousel-control-prev" href="#wireframeCarousel" role="button" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#wireframeCarousel" role="button" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">Next</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+					</div>
+					<div class="col-md-6">
+						<div id="wireframeCarousel" class="carousel slide" data-ride="carousel" data-interval="5000">
+							<ol class="carousel-indicators">
+								<li data-target="#wireframeCarousel" data-slide-to="0" class="active"></li>
+								<li data-target="#wireframeCarousel" data-slide-to="1"></li>
+								<li data-target="#wireframeCarousel" data-slide-to="2"></li>
+							</ol>
+							<div class="carousel-inner">
+								<div class="carousel-item active">
+									<h5>Projects Hub's Home Page</h5>
+									<img class="d-block w-100" src="/images/DevOpsHomePage.PNG" alt="Wireframe 1">
+								</div>
+								<div class="carousel-item">
+									<h5>The Page All About Your Project</h5>
+									<img class="d-block w-100" src="/images/DevOpsProjectAboutPage.PNG" alt="Wireframe 2">
+								</div>
+								<div class="carousel-item">
+									<h5>View Your Account and Add More Information</h5>
+									<img class="d-block w-100" src="/images/DevOpsAccountPage.PNG" alt="Wireframe 3">
+								</div>
+							</div>
+							<a class="carousel-control-prev" href="#wireframeCarousel" role="button" data-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="sr-only">Previous</span>
+							</a>
+							<a class="carousel-control-next" href="#wireframeCarousel" role="button" data-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="sr-only">Next</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
 
-  <footer class="mt-auto bg-dark text-light py-3">
-    <div class="container text-center">
-      &copy; 2025 Jacob Baker. All rights reserved.
-    </div>
-  </footer>
+		<footer class="mt-auto bg-dark text-light py-3">
+			<div class="container text-center">
+				&copy; 2025 Jacob Baker. All rights reserved.
+			</div>
+		</footer>
 
-	<script src="/js/jquery.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
-</body>
+	</body>
 </html>

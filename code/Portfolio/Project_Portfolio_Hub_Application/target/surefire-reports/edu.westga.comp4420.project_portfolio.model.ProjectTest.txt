@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: edu.westga.comp4420.project_portfolio.model.ProjectTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.072 s - in edu.westga.comp4420.project_portfolio.model.ProjectTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.129 s - in edu.westga.comp4420.project_portfolio.model.ProjectTest
