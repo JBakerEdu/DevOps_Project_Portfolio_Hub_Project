@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Project Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Navigation (same as your other pages) -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/projects">Projects</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- WELCOME HEADER -->
+  <header class="jumbotron jumbotron-fluid bg-light text-dark mb-0">
+    <div class="container text-center">
+      <h1 class="display-4">Welcome to Jacob’s Project Hub</h1>
+      <p class="lead">A simple DevOps playground—download, demo, and track your builds in one place.</p>
+      <a href="/projects" class="btn btn-primary btn-lg">Browse Projects</a>
+    </div>
+  </header>
+  
+  <!-- ABOUT ME SECTION -->
+  <section id="about" class="py-5 bg-white">
+    <div class="container">
+      <h2>About the Creator</h2>
+      <div class="row align-items-center">
+        <div class="col-md-4 text-center mb-4">
+          <img src="/images/profile.jpg" class="rounded-circle img-fluid" alt="Jacob Baker">
+        </div>
+        <div class="col-md-8">
+          <p>Hi, I’m Jacob Baker. As a Computer Science student and Web Service Director, I built Project Hub to streamline how my team shares pre-release builds. I tackled real‑world DevOps challenges—managing temp files, logging downloads, and running executables on demand—all in a single, easy‑to‑use page.</p>
+          <p>With rock‑solid Node.js/Express back‑end and EJS templating, plus Bootstrap styling, Project Hub reflects my passion for clean, practical tools that boost productivity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECT DETAILS SECTION -->
+  <section id="project-details" class="py-5 bg-light">
+    <div class="container">
+      <h2>What Project Hub Does</h2>
+      <p>Project Hub simplifies build distribution by offering:</p>
+      <ul>
+        <li><strong>One‑Click Download:</strong> Grab the latest ZIP or EXE without hunting through folders.</li>
+        <li><strong>Temporary File Handling:</strong> Copies each build to a temp directory, so you always serve a fresh, isolated file.</li>
+        <li><strong>Download History:</strong> Logs every download in <code>history.txt</code> with timestamps for audit trails.</li>
+        <li><strong>Server‑Side Execution:</strong> Spin up builds on the server via a dedicated endpoint for quick demos.</li>
+      </ul>
+      <p>Designed for small teams and solo developers, it’s the perfect starting point for more advanced features like authentication, multi‑project support, or CI/CD integration.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="mt-auto bg-dark text-light py-3">
+    <div class="container text-center">
+      &copy; 2025 Jacob Baker. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+</body>
+</html>
