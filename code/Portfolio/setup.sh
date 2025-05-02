@@ -1,56 +1,102 @@
 #!/bin/bash
 
-echo "========== Project Portfolio Hub Setup Script =========="
+echo "========== Project Portfolio Hub Setup Menu =========="
 
-# Step 1: Build Java App
-echo ">> Building Java app and generating executable .jar and .exe..."
-cd Project_portfolio_Hub_Application || { echo "Java project not found."; exit 1; }
-mvn clean package || { echo "Build failed. Exiting..."; exit 1; }
+# Java variables
+APP_DIR="Project_portfolio_Hub_Application"
+JAR_FILE="$APP_DIR/target/Project_Portfolio_Hub_Executable.jar"
+EXE_FILE="$APP_DIR/target/Project_Portfolio_Hub.exe"
+WEB_DIR="Portfolio_Website"
+EXE_DEST="$WEB_DIR/AppExeFile"
 
-# Step 2: Run Unit Tests
-echo ">> Running tests..."
-mvn test || { echo "Tests failed."; exit 1; }
+build_project() {
+    echo ">> Building Java app and generating .jar and .exe..."
+    cd "$APP_DIR" || { echo "Java project not found."; exit 1; }
+    mvn clean package || { echo "Build failed."; exit 1; }
+    cd - >/dev/null
+}
 
-# Step 3: Copy Executables to Website Temp Folder
-EXE_FILE="target/Project_Portfolio_Hub.exe"
-DEST_TEMP="../Portfolio_Website/AppExeFile"
+run_tests() {
+    echo ">> Running tests..."
+    cd "$APP_DIR" || exit 1
+    mvn test
+    cd - >/dev/null
+}
 
-echo ">> Copying .exe to website temp folder..."
-mkdir -p "$DEST_TEMP"
-cp "$EXE_FILE" "$DEST_TEMP/Project_Portfolio_Hub.exe"
+run_java_app() {
+    if [ -f "$JAR_FILE" ]; then
+        echo ">> Launching Java app..."
+        java -jar "$JAR_FILE" &
+        sleep 2
+    else
+        echo ">> JAR file not found. Please build the project first."
+    fi
+}
 
-# Step 4: Start Node.js Website
-cd ../Portfolio_Website || { echo "Website folder not found."; exit 1; }
+launch_website() {
+    echo ">> Launching Node.js website..."
+    cd "$WEB_DIR" || { echo "Website folder not found."; exit 1; }
+    npm install
+    if ! npm list archiver > /dev/null 2>&1; then
+        npm install archiver
+    fi
+    node app.js &>/dev/null &
+    sleep 3
+    echo ">> Opening browser at http://localhost:8080 ..."
+    if command -v xdg-open > /dev/null; then
+      xdg-open http://localhost:8080
+    elif command -v open > /dev/null; then
+      open http://localhost:8080
+    elif command -v start > /dev/null; then
+      start http://localhost:8080
+    else
+      echo ">> Please open http://localhost:8080 manually."
+    fi
+    cd - >/dev/null
+}
 
-echo ">> Installing Node.js dependencies..."
-npm install
+copy_exe_to_website() {
+    echo ">> Copying .exe to website download folder..."
+    mkdir -p "$EXE_DEST"
+    cp "$EXE_FILE" "$EXE_DEST/Project_Portfolio_Hub.exe"
+}
 
-# Ensure archiver is installed
-if ! npm list archiver > /dev/null 2>&1; then
-  echo ">> Installing 'archiver'..."
-  npm install archiver
-fi
+# Menu loop
+while true; do
+    echo ""
+    echo "Choose a single option:"
+    echo "1) Build project and run everything"
+    echo "2) Run Java app only"
+    echo "3) Run Node.js website only"
+    echo "4) Run tests only"
+    echo "5) Exit"
+    read -p "Enter one option [1-5]: " choice
 
-echo ">> Launching website at http://localhost:8080 ..."
-node app.js &>/dev/null &
+    case $choice in
+        1)
+            build_project
+            run_tests
+            run_java_app
+            copy_exe_to_website
+            launch_website
+            ;;
+        2)
+            run_java_app
+            ;;
+        3)
+            launch_website
+            ;;
+        4)
+            run_tests
+            ;;
+        5)
+            echo "Exiting setup script."
+            break
+            ;;
+        *)
+            echo "Invalid option. Please try again."
+            ;;
+    esac
+done
 
-# Give the server a moment to start
-sleep 3
-
-# Step 5: Open the browser automatically
-echo ">> Opening browser to http://localhost:8080"
-# Linux
-if command -v xdg-open > /dev/null; then
-  xdg-open http://localhost:8080
-# macOS
-elif command -v open > /dev/null; then
-  open http://localhost:8080
-# Windows Git Bash
-elif command -v start > /dev/null; then
-  start http://localhost:8080
-else
-  echo ">> Please open http://localhost:8080 in your browser manually."
-fi
-
-echo "========== Setup Complete =========="
-
+echo "========== Done =========="
