@@ -74,14 +74,77 @@
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>0.0.6</version>
 				<configuration>
-					<mainClass>edu.westga.comp4420.project_portfolio.Main</mainClass>
+					<mainClass>edu.westga.comp4420.project_portfolio.Launcher</mainClass>
 				</configuration>
 			</plugin>
 			
-			<plugin> <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.0.2</version>
-			</plugin>
+            <!-- Shade: fat jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>${project.basedir}/Project_Portfolio_Hub_Executable.jar</outputFile>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>edu.westga.comp4420.project_portfolio.Launcher</mainClass>
+                                </transformer>
+                            </transformers>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Launch4j: .exe for Windows -->
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <version>2.4.1</version>
+                <executions>
+                    <execution>
+                        <id>l4j-gui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <outfile>${project.basedir}/Project_Portfolio_Hub.exe</outfile>
+                            <jar>${project.basedir}/Project_Portfolio_Hub_Executable.jar</jar>
+                            <dontWrapJar>false</dontWrapJar>
+                            <errTitle>Error in Project Hub</errTitle>
+                            <classPath>
+                                <mainClass>edu.westga.comp4420.project_portfolio.Launcher</mainClass>
+                            </classPath>
+                            <jre>
+                                <path>%JAVA_HOME%</path>
+                                <minVersion>11.0.0</minVersion>
+                                <initialHeapSize>512</initialHeapSize>
+                                <maxHeapSize>1024</maxHeapSize>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>1.0.0.0</fileVersion>
+                                <txtFileVersion>1.0.0.0</txtFileVersion>
+                                <fileDescription>Project Portfolio Hub Desktop App</fileDescription>
+                                <copyright>Copyright (c) 2025</copyright>
+                                <companyName>UWG DevOps</companyName>
+                                <productVersion>1.0.0.0</productVersion>
+                                <txtProductVersion>${project.version}</txtProductVersion>
+                                <productName>Project Portfolio Hub</productName>
+                                <internalName>ProjectPortfolioHub</internalName>
+                                <originalFilename>Project_Portfolio_Hub.exe</originalFilename>
+                            </versionInfo>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 			
 			<plugin> <!-- checks code styling -->
 				<groupId>org.apache.maven.plugins</groupId>
