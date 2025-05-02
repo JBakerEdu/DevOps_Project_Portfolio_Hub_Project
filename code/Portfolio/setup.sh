@@ -34,6 +34,11 @@ run_java_app() {
 }
 
 launch_website() {
+    if [ ! -f "$EXE_DEST/Project_Portfolio_Hub.exe" ]; then
+        echo ">> .exe file missing from AppExeFile. Attempting to copy from build output..."
+        copy_exe_to_website || return 1
+    fi
+
     echo ">> Launching Node.js website..."
     cd "$WEB_DIR" || { echo "Website folder not found."; exit 1; }
     npm install
@@ -41,6 +46,7 @@ launch_website() {
         npm install archiver
     fi
     node app.js &>/dev/null &
+
     sleep 3
     echo ">> Opening browser at http://localhost:8080 ..."
     if command -v xdg-open > /dev/null; then
@@ -56,6 +62,11 @@ launch_website() {
 }
 
 copy_exe_to_website() {
+    if [ ! -f "$EXE_FILE" ]; then
+        echo ">> ERROR: Executable not found at $EXE_FILE"
+        echo ">> You must build the project first."
+        return 1
+    fi
     echo ">> Copying .exe to website download folder..."
     mkdir -p "$EXE_DEST"
     cp "$EXE_FILE" "$EXE_DEST/Project_Portfolio_Hub.exe"
